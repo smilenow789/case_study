@@ -35,11 +35,10 @@
 			<version>5.0.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>jakarta.faces</artifactId>
-			<version>4.0.0-M1</version>
-		</dependency>
+    <dependency>
+        <groupId>org.glassfish</groupId>
+        <artifactId>jakarta.faces</artifactId>
+        <version>4.0.1</version> <scope>compile</scope> </dependency>
 
 		<dependency>
 			<groupId>jakarta.inject</groupId>
@@ -48,11 +47,11 @@
 		</dependency>
 		
 	
-    <dependency>
-        <groupId>jakarta.platform</groupId>
-        <artifactId>jakarta.jakartaee-web-api</artifactId>
-        <version>10.0.0</version> <scope>provided</scope>
-    </dependency>
+  <dependency>
+    <groupId>jakarta.platform</groupId>
+    <artifactId>jakarta.jakartaee-web-api</artifactId>
+    <version>10.0.0</version> <scope>provided</scope>
+</dependency>
 
 
 
