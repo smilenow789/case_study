@@ -5,24 +5,43 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
 	<title>Login</title>
-	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
 </h:head>
 <h:body>
-	<h1>Login</h1>
 	<h:form>
 		<p:card style="width: 25rem; margin-bottom: 2em">
 			<f:facet name="title">
-            Login
-        </f:facet>
+            	Login        
+        	</f:facet>
 
 			<h5>
-				<p:outputLabel for="password" value="Password" />
+				<p:outputLabel for="benutzername" value="Benutzername" />
 			</h5>
-			<p:password id="password" value="#{passwordView.password}"
-				toggleMask="true" redisplay="true" />
+			<div class="ui-inputgroup">
+				<div class="ui-inputgroup-addon">
+					<i class="pi pi-user"></i>
+				</div>
+				<p:inputText id="benutzername"
+					value="#{loginController.benutzer.name}" size="25">
+					<f:event type="jakarta.faces.event.PostValidateEvent"
+						listener="#{loginController.postValidateName}" />
+				</p:inputText>
+			</div>
 
-
-
+			<h5>
+				<p:outputLabel for="passwort" value="Passwort" />
+			</h5>
+			<p:password id="passwort"
+				value="#{loginController.benutzer.passwort}" toggleMask="true"
+				redisplay="true" validator="#{loginController.validateLogin}"
+				size="25" />
+			<br />
+			<br />
+			<f:facet name="footer">
+				<p:commandButton value="Login" action="#{loginController.login}" />
+				<p:messages>
+					<p:autoUpdate />
+				</p:messages>
+			</f:facet>
 		</p:card>
 	</h:form>
 </h:body>
