@@ -16,8 +16,17 @@ public class HelloWorld implements Serializable{
     private static final long serialVersionUID = -6913972022251814607L;
 
     private String s1 = "Hello World!!";
+    private String s2 = "Test Nummer zwei";
 
-    public String getS1() {
+    public String getS2() {
+		return s2;
+	}
+
+	public void setS2(String s2) {
+		this.s2 = s2;
+	}
+
+	public String getS1() {
         System.out.println(s1);
         return s1;
     }
