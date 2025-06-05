@@ -1,1 +1,5 @@
-helloworld\HelloWorld.class
+login\Aufgabe.class
+login\AufgabenListeController.class
+login\Benutzer.class
+login\LoginController.class
+login\Aufgabenliste.class

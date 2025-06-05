@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Aufgabenliste</title>
+	<h:outputStylesheet library="css" name="styles.css" />
+</h:head>
+<h:body>
+	<h1>TO-DO WebApp</h1>
+	<h:form>
+		<p:card style="width: 30em">
+			<f:facet name="title">Login</f:facet>
+
+			<p:panelGrid>
+				<p:row>
+					<p:outputLabel value="Benutzername: " for="name" />
+					<p:inputText id="name" value="#{loginController.benutzer.name}"
+						size="25">
+						<f:event type="jakarta.faces.event.PostValidateEvent"
+							listener="#{loginController.postValidateName}" />
+					</p:inputText>
+				</p:row>
+				<br/>
+				<p:row>
+					<p:outputLabel value="Passwort: " for="pass" />
+					<p:password id="pass" value="#{loginController.benutzer.passwort}"
+						required="true" validator="#{loginController.validateLogin}"
+						size="25" />
+				</p:row>
+			</p:panelGrid>
+
+			<f:facet name="footer">
+				<p:commandButton value="Login" action="#{loginController.login}" />
+				<p:messages>
+					<p:autoUpdate />
+				</p:messages>
+			</f:facet>
+
+		</p:card>
+	</h:form>
+	
+	 <p:textEditor />
+
+</h:body>
+</html>
