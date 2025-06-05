@@ -5,13 +5,13 @@
 
 # --- Konfiguration ---
 # Pfad zum Verzeichnis, wo die WAR-Datei erstellt werden soll
-$WarPfad = "C:\Users\roger\OneDrive\coding_projects\fallstudie_iu\jakartaee-hello-world"
+$WarPfad = "C:\Users\roger\OneDrive\coding_projects\fallstudie_iu\new_maven_projekt_one\Fallstudie_IU"
 
 # Pfad zum Quellverzeichnis der WAR-Datei (dem 'target'-Ordner deines Maven-Projekts)
-$SourceWarDirectory = "C:\Users\roger\OneDrive\coding_projects\fallstudie_iu\jakartaee-hello-world\target"
+$SourceWarDirectory = "C:\Users\roger\OneDrive\coding_projects\fallstudie_iu\new_maven_projekt_one\Fallstudie_IU\target"
 
 # Name deiner WAR-Datei (muss genau dem 'finalName' in deiner pom.xml entsprechen)
-$WarFileName = "jakartaee-hello-world.war"
+$WarFileName = "Fallstudie_IU.war"
 
 # Pfad zum 'webapps'-Verzeichnis deines Apache Tomcats
 $TomcatWebappsDirectory = "C:\Users\roger\OneDrive\coding_projects\jsf\tools\apache-tomcat-10.1.36\webapps"
