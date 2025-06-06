@@ -46,7 +46,7 @@ public class LoginController implements Serializable {
 
 	public String login() {
 		if (this.name.equals("Admin"))
-			return "editierbar";
+			return "requirementsengineer";
 		else
 			return "aufgabenliste";
 	}
