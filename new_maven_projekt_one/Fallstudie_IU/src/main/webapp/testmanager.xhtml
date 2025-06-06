@@ -5,36 +5,60 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Testmanager</title>
-	<h:outputStylesheet library="css" name="styles.css" />
 </h:head>
 <h:body>
 	<h1>Testmanager</h1>
+	<p:growl id="growlMessages" showDetail="true" life="4000"
+		severity="info" />
 	<h:form>
-		<p:dataTable var="aufgabe" value="#{aufgabenListe.liste}">
-			<f:facet name="header">
-				<h2>Aufgabenliste</h2>
+		<p:card id="recard" style="width: 75rem; margin-bottom: 2em">
+			<f:facet name="title">Neuer Testlauf anlegen:</f:facet>
+			<div>
+				<div>
+					<h5>Titel des Testlaufs</h5>
+					<p:inputText id="testlauftitel" value="#{testlauf.testlaufTitel}"
+						required="true" width="75rem" />
+					<p:message for="testlauftitel">
+						<p:autoUpdate />
+					</p:message>
+				</div>
+
+
+
+
+				<div>
+					<h5>Beschreibung des Testlaufes</h5>
+					<p:textEditor id="beschreibung" widgetVar="editor1"
+						value="#{testlauf.beschreibung}" height="300px" width="75rem"
+						required="true" />
+					<p:message for="beschreibung">
+						<p:autoUpdate />
+					</p:message>
+				</div>
+
+
+
+
+
+
+				<div>
+					<h5>Zugehörige Testfälle auswählen</h5>
+					<p:selectManyCheckbox id="ausgewaehlteTestfaelle"
+						value="#{testlauf.ausgewaehlteTestfaelle}" layout="responsive"
+						columns="3">
+						<f:selectItems value="#{testfallliste.liste}" var="testfall"
+							itemLabel="#{testfall.testfallTitel}"
+							itemValue="#{testfall.testfallTitel}" />
+					</p:selectManyCheckbox>
+				</div>
+			</div>
+			<f:facet name="footer">
+				<p:commandButton value="Testlauf erfassen"
+					action="#{testlauf.testlaufErstellen}"
+					update="recard growlMessages" />
 			</f:facet>
-			<p:column headerText="Text">
-				<p:outputLabel value="#{aufgabe.text}" />
-			</p:column>
-			<p:column headerText="Person">
-				<p:outputLabel value="#{aufgabe.person}" />
-			</p:column>
-			<p:column headerText="Fällig am">
-				<p:datePicker value="#{aufgabe.faelligAm}" disabled="true" />
-			</p:column>
-			<p:column headerText="Erledigt">
-				<p:button icon="pi pi-check" styleClass="rounded-button"
-					rendered="#{aufgabe.erledigt}" disabled="true" />
-				<p:button icon="pi pi-check"
-					styleClass="rounded-button ui-button-outlined"
-					rendered="#{!aufgabe.erledigt}" disabled="true" />
-			</p:column>
-			<p:column headerText="Aufwand">
-				<p:outputLabel id="output" value="#{aufgabe.aufwand}" />
-			</p:column>
-		</p:dataTable>
-		<p:commandButton value="Ändern" icon="pi pi-pencil" action="#{controller.startEdit()}" />
+		</p:card>
+
 	</h:form>
 </h:body>
 </html>

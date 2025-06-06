@@ -1,6 +1,7 @@
-login\Aufgabe.class
+testmanager\Testlauf.class
+testfallersteller\Testfallliste.class
 login\AufgabenListeController.class
 login\Benutzer.class
-login\Aufgabenliste.class
 requirementsengineer\Anforderung.class
 login\LoginController.class
+testfallersteller\Testfall.class
