@@ -8,6 +8,8 @@
 </h:head>
 <h:body>
 	<h1>Requirements Engineer</h1>
+	<p:growl id="growlMessages" showDetail="true" life="4000"
+		severity="info" />
 	<h:form>
 		<p:card id="recard" style="width: 75rem; margin-bottom: 2em">
 			<f:facet name="title">Neue Anforderung erfassen:</f:facet>
@@ -31,7 +33,8 @@
 			</div>
 			<f:facet name="footer">
 				<p:commandButton value="Anforderung erfassen"
-					action="#{anforderung.anforderungErstellen}" update="recard" />
+					action="#{anforderung.anforderungErstellen}"
+					update="recard growlMessages" />
 			</f:facet>
 		</p:card>
 

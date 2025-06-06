@@ -3,6 +3,8 @@ package requirementsengineer;
 import java.io.Serializable;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 
 @Named
@@ -54,6 +56,13 @@ public class Anforderung implements Serializable {
 		// Felder leeren nach erstellung oder navigation
 		this.anforderungstitel = null;
 		this.beschreibung = null;
+
+		Anforderung.info();
+	}
+
+	public static void info() {
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Anforderung erfolgreich erfasst."));
 	}
 
 }
