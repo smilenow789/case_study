@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Testfallersteller</title>
+</h:head>
+<h:body>
+	<h1>Testfallersteller</h1>
+	<p:growl id="growlMessages" showDetail="true" life="4000"
+		severity="info" />
+	<h:form>
+		<p:card id="recard" style="width: 75rem; margin-bottom: 2em">
+			<f:facet name="title">Testfall zur Anforderung erstellen:</f:facet>
+			<div>
+				<div>
+					<div>
+						<h5>Bitte wählen Sie eine Anforderung aus, zu welcher der
+							Testfall erstellt werden soll.</h5>
+						<p:selectOneRadio id="anforderungsauswahl"
+							value="#{testfall.anforderungsId}" layout="responsive"
+							columns="3" required="true"
+							requiredMessage="Bitte wählen Sie eine Anforderung aus.">
+							<!-- f:selectItems verwendet die neue Methode, die SelectItem-Objekte liefert -->
+							<f:selectItems
+								value="#{anforderungsliste.anforderungenAsSelectItems}" />
+						</p:selectOneRadio>
+						<p:message for="anforderungsauswahl">
+							<p:autoUpdate />
+						</p:message>
+					</div>
+
+
+
+					<div>
+						<h5>Testfall-Titel</h5>
+						<p:inputText id="testfalltitel" value="#{testfall.testfallTitel}"
+							required="true" width="75rem" />
+						<p:message for="testfalltitel">
+							<p:autoUpdate />
+						</p:message>
+					</div>
+
+
+
+
+					<div>
+						<h5>Beschreibung des Testfalles</h5>
+						<p:textEditor id="beschreibung" widgetVar="editor1"
+							value="#{testfall.beschreibung}" height="300px" width="75rem"
+							required="true" />
+						<p:message for="beschreibung">
+							<p:autoUpdate />
+						</p:message>
+					</div>
+
+
+
+				</div>
+				<f:facet name="footer">
+					<p:commandButton value="Testfall erfassen"
+						action="#{testfall.testfallErstellen}"
+						update="recard growlMessages" />
+				</f:facet>
+			</div>
+		</p:card>
+
+	</h:form>
+</h:body>
+</html>

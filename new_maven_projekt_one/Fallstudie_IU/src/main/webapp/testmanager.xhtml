@@ -46,9 +46,7 @@
 					<p:selectManyCheckbox id="ausgewaehlteTestfaelle"
 						value="#{testlauf.ausgewaehlteTestfaelle}" layout="responsive"
 						columns="3">
-						<f:selectItems value="#{testfallliste.liste}" var="testfall"
-							itemLabel="#{testfall.testfallTitel}"
-							itemValue="#{testfall.testfallTitel}" />
+						<f:selectItems value="#{testfallliste.testfaelleAsSelectItems}" />
 					</p:selectManyCheckbox>
 				</div>
 			</div>
