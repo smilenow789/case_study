@@ -4,44 +4,47 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Aufgabenliste</title>
-	<h:outputStylesheet library="css" name="styles.css" />
+	<title>Login</title>
 </h:head>
 <h:body>
-	<h1>TO-DO WebApp</h1>
 	<h:form>
-		<p:card style="width: 30em">
+		<p:card id="loginCard" style="width: 25rem; margin-bottom: 2em">
 			<f:facet name="title">Login</f:facet>
-
-			<p:panelGrid>
-				<p:row>
-					<p:outputLabel value="Benutzername: " for="name" />
-					<p:inputText id="name" value="#{loginController.benutzer.name}"
-						size="25">
+			<div>
+				<div>
+					<h5>
+						<p:outputLabel for="username" value="Benutzername" />
+					</h5>
+					<p:inputText id="username" placeholder="Benutzername" size="28"
+						required="true" value="#{loginController.benutzer.name}">
 						<f:event type="jakarta.faces.event.PostValidateEvent"
 							listener="#{loginController.postValidateName}" />
 					</p:inputText>
-				</p:row>
-				<br/>
-				<p:row>
-					<p:outputLabel value="Passwort: " for="pass" />
-					<p:password id="pass" value="#{loginController.benutzer.passwort}"
-						required="true" validator="#{loginController.validateLogin}"
-						size="25" />
-				</p:row>
-			</p:panelGrid>
-
+					<p:message for="username">
+						<p:autoUpdate />
+					</p:message>
+				</div>
+				<div>
+					<h5>
+						<p:outputLabel for="password" value="Passwort" />
+					</h5>
+					<p:password id="password"
+						value="#{loginController.benutzer.passwort}" required="true"
+						validator="#{loginController.validateLogin}" size="25"
+						toggleMask="true" redisplay="true" />
+					<p:message for="password">
+						<p:autoUpdate />
+					</p:message>
+				</div>
+			</div>
 			<f:facet name="footer">
-				<p:commandButton value="Login" action="#{loginController.login}" />
-				<p:messages>
-					<p:autoUpdate />
-				</p:messages>
+				<p:commandButton value="Login" action="#{loginController.login}"
+					update="loginCard" />
 			</f:facet>
-
 		</p:card>
 	</h:form>
-	
-	 <p:textEditor />
+
+	<p:textEditor />
 
 </h:body>
 </html>

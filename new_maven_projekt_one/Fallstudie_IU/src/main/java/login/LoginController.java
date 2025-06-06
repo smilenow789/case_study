@@ -29,24 +29,22 @@ public class LoginController implements Serializable {
 		this.benutzerListe.add(new Benutzer("User", "456"));
 		this.benutzer = new Benutzer();
 	}
-	
+
 	public void postValidateName(ComponentSystemEvent ev) throws AbortProcessingException {
-		UIInput temp = (UIInput)ev.getComponent();
-		this.name = (String)temp.getValue();
-		int breakpoint = 1;
+		UIInput temp = (UIInput) ev.getComponent();
+		this.name = (String) temp.getValue();
 	}
-	
+
 	public void validateLogin(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-		for(Benutzer b:benutzerListe) {
-			Benutzer temp=new Benutzer(this.name, (String)value);
-			if(b.equals(temp))
+		for (Benutzer b : benutzerListe) {
+			Benutzer temp = new Benutzer(this.name, (String) value);
+			if (b.equals(temp))
 				return;
 		}
 		throw new ValidatorException(new FacesMessage("Login falsch!"));
 	}
 
 	public String login() {
-		int breakpoint = 1;
 		if (this.name.equals("Admin"))
 			return "editierbar";
 		else

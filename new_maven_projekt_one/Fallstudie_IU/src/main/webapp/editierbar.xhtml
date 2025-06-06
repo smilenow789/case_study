@@ -4,40 +4,40 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Aufgabenliste</title>
-	<h:outputStylesheet library="css" name="styles.css" />
+	<title>Requirements Engineer</title>
 </h:head>
 <h:body>
-	<h1>TO-DO WebApp</h1>
+	<h1>Requirements Engineer</h1>
 	<h:form>
-		<p:dataTable var="aufgabe" value="#{aufgabenListe.liste}">
-			<f:facet name="header">
-				<h2>Aufgabenliste ändern</h2>
+		<p:card id="recard" style="width: 75rem; margin-bottom: 2em">
+			<f:facet name="title">Neue Anforderung erfassen:</f:facet>
+			<div>
+				<h5>Titel der Anforderung</h5>
+				<p:inputText id="anforderungstitel"
+					value="#{anforderung.anforderungstitel}" required="true"
+					width="75rem" />
+				<p:message for="anforderungstitel">
+					<p:autoUpdate />
+				</p:message>
+				<h5>
+					<p:outputLabel for="beschreibung" value="Beschreibung" />
+				</h5>
+				<p:textEditor id="beschreibung" widgetVar="editor1"
+					value="#{anforderung.beschreibung}" height="300px" width="75rem"
+					required="true" />
+				<p:message for="beschreibung">
+					<p:autoUpdate />
+				</p:message>
+			</div>
+			<f:facet name="footer">
+				<p:commandButton value="Anforderung erfassen"
+					action="#{anforderung.anforderungErstellen}" update="recard" />
 			</f:facet>
-			<p:column headerText="Text">
-				<p:inputText value="#{aufgabe.text}" required="true" label="Aufgabentext"/>
-			</p:column>
-			<p:column headerText="Person">
-				<p:inputText value="#{aufgabe.person}" />
-			</p:column>
-			<p:column headerText="Fällig am">
-				<p:datePicker id="faelligAm" value="#{aufgabe.faelligAm}"
-					pattern="dd.MM.yy" />
-			</p:column>
-			<p:column headerText="Erledigt">
-				<p:toggleSwitch value="#{aufgabe.erledigt}" />
-			</p:column>
-			<p:column headerText="Aufwand (h)">
-				<h:inputHidden id="aufwand" value="#{aufgabe.aufwand}" />
-				<p:outputLabel id="output" value="#{aufgabe.aufwand}" />
-				<p:slider for="aufwand" display="output" minValue="1" maxValue="40" />
-			</p:column>
-		</p:dataTable>
-		<p:messages id="messages">
-			<p:autoUpdate />
-		</p:messages>
-		<p:commandButton value="Speichern" icon="pi pi-check"
-			action="#{controller.stopEdit()}" />
+		</p:card>
+
+
+
+
 	</h:form>
 </h:body>
 </html>
