@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Tester</title>
+</h:head>
+<h:body>
+	<h1>Tester</h1>
+	<p:growl id="growlMessages" showDetail="true" life="4000"
+		severity="info" />
+	<h:form>
+		<p:card id="recard" style="width: 75rem; margin-bottom: 2em">
+			<f:facet name="title">Testfall Ergebnisse erfassen:</f:facet>
+
+
+			<p:dataTable var="zugewiesenerTestfall"
+				value="#{testfallliste.liste}" styleClass="ui-datatable"
+				rowKey="#{zugewiesenerTestfall.id}">
+
+				<p:column headerText="Testfall Id:">
+					<h:outputText value="#{zugewiesenerTestfall.id}" />
+				</p:column>
+
+				<p:column headerText="Ihnen zugeordnete Testfälle (Namen):">
+					<h:outputText value="#{zugewiesenerTestfall.testfallTitel}" />
+				</p:column>
+
+				<p:column headerText="Ergebnis des Testfalls:">
+					<h:inputText id="testfallErgebnisInput"
+						value="#{zugewiesenerTestfall.ergebnis}" />
+				</p:column>
+			</p:dataTable>
+
+			<h:panelGroup rendered="#{empty testfallliste.liste}">
+				<p class="empty-table-message">Es sind keine Testfälle
+					vorhanden. Bitte erstellen Sie zuerst Testfälle auf der
+					Testfallersteller-Seite.</p>
+			</h:panelGroup>
+
+			<f:facet name="footer">
+				<p:commandButton value="Speichern" update="recard growlMessages"
+					action="#{testfallliste.speichern}" />
+			</f:facet>
+		</p:card>
+	</h:form>
+</h:body>
+</html>

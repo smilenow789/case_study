@@ -26,7 +26,12 @@ public class LoginController implements Serializable {
 	public LoginController() {
 		this.benutzerListe = new ArrayList<Benutzer>();
 		this.benutzerListe.add(new Benutzer("Admin", "123"));
-		this.benutzerListe.add(new Benutzer("User", "456"));
+		this.benutzerListe.add(new Benutzer("requirementsengineer", "456"));
+		this.benutzerListe.add(new Benutzer("testfallersteller", "456"));
+		this.benutzerListe.add(new Benutzer("testmanager", "456"));
+		this.benutzerListe.add(new Benutzer("tester", "456"));
+		this.benutzerListe.add(new Benutzer("testerEins", "456"));
+		this.benutzerListe.add(new Benutzer("testerZwei", "456"));
 		this.benutzer = new Benutzer();
 	}
 
@@ -45,10 +50,20 @@ public class LoginController implements Serializable {
 	}
 
 	public String login() {
-		if (this.name.equals("Admin"))
-			return "requirementsengineer";
+		if ((this.name.equals("Admin")) || (this.name.equals("requirementsengineer"))) {
+			return "requirementsengineer"; 
+			}
+		else if (this.name.equals("testfallersteller")) {
+			return "testfallersteller";
+		}
+		else if (this.name.equals("testmanager")) {
+			return "testmanager";
+		}
+		else if (this.name.equals("tester")) {
+			return "tester";
+		}
 		else
-			return "aufgabenliste";
+			return "login";
 	}
 
 	public String getName() {
