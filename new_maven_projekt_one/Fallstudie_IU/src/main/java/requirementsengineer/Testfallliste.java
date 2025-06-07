@@ -52,14 +52,18 @@ public class Testfallliste implements Serializable {
 					+ tf.getErgebnis() + "'");
 		}
 
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testergebnisse erfolgreich gespeichert."));
-
 		System.out.println("--- Zustand der Testfallliste NACH dem Speichern (im speichern() Methode) ---");
 		for (Testfall tf : liste) {
 			System.out.println("  ID: " + tf.getId() + ", Titel: " + tf.getTestfallTitel()
 					+ ", Gespeichertes Ergebnis: '" + tf.getErgebnis() + "'");
 		}
+
+		info();
+	}
+
+	public static void info() {
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testergebnisse erfolgreich gespeichert."));
 	}
 
 	public List<SelectItem> getTestfaelleAsSelectItems() {

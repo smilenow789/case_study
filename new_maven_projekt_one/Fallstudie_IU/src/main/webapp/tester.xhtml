@@ -28,9 +28,14 @@
 				</p:column>
 
 				<p:column headerText="Ergebnis des Testfalls:">
-					<h:inputText id="testfallErgebnisInput"
+					<h:inputText id="testfallErgebnisInput" required="true"
 						value="#{zugewiesenerTestfall.ergebnis}" />
+					<p:message for="testfallErgebnisInput">
+						<p:autoUpdate />
+					</p:message>
 				</p:column>
+
+
 			</p:dataTable>
 
 			<h:panelGroup rendered="#{empty testfallliste.liste}">
