@@ -1,15 +1,12 @@
 package requirementsengineer;
 
 import java.io.Serializable;
-
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
-import jakarta.inject.Inject;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Anforderung implements Serializable {
@@ -31,6 +28,14 @@ public class Anforderung implements Serializable {
 		this.anforderungstitel = anforderungstitel;
 		this.beschreibung = beschreibung;
 
+	}
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
 	}
 
 	public String getAnforderungstitel() {

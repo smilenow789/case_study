@@ -4,40 +4,57 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.annotation.PostConstruct; // Wichtig: Import für @PostConstruct
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.persistence.EntityManager;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
+import jakarta.faces.view.ViewScoped;
 
 @Named
-@ApplicationScoped
+@ViewScoped
 public class Testfallliste implements Serializable {
+
+	@Inject
+	private EntityManager em;
+
 	private List<Testfall> liste;
 
+	private String neuerTestfallTitel;
+	private String neueTestfallBeschreibung;
+	private int neueZuErfuellendeAnforderung = 0;
+
 	public Testfallliste() {
-		// Der Konstruktor wird vom CDI-Container aufgerufen.
-		// Die eigentliche Initialisierung der Liste mit Daten findet am besten in
-		// @PostConstruct statt.
-		System.out.println("Testfallliste() Konstruktor aufgerufen (erste Initialisierungsphase).");
-		liste = new ArrayList<>(); // Liste hier initialisieren, falls keine @PostConstruct Methode verwendet wird
 	}
 
-	@PostConstruct // Diese Methode wird nach der Bean-Konstruktion und Injektion aufgerufen
-	public void init() {
-		System.out.println("@PostConstruct in Testfallliste aufgerufen. Fülle Liste mit Testfällen.");
-		liste.add(new Testfall("Testfall Titel 1", "Beschreibung für Testfall 1", 2001));
-		liste.add(new Testfall("Testfall Titel 2", "Beschreibung für Testfall 2", 2002));
-		liste.add(new Testfall("Testfall Titel 3", "Beschreibung für Testfall 3", 2003));
-		liste.add(new Testfall("Testfall Titel 4", "Beschreibung für Testfall 4", 2004));
-		liste.add(new Testfall("Testfall Titel 5", "Beschreibung für Testfall 5", 2005));
-		System.out.println("Testfallliste initialisiert mit " + liste.size() + " Testfällen.");
+	@PostConstruct
+	public void erstelleTestfallliste() {
+
+		try {
+			if (em.createQuery("SELECT COUNT(t) FROM Testfall t", Long.class).getSingleResult() == 0) {
+				em.getTransaction().begin();
+				em.persist(new Testfall(1, "Testfall Titel 1", "Beschreibung für Testfall 1"));
+				em.persist(new Testfall(2, "Testfall Titel 2", "Beschreibung für Testfall 2"));
+				em.persist(new Testfall(2, "Testfall Titel 3", "Beschreibung für Testfall 3"));
+				em.persist(new Testfall(3, "Testfall Titel 4", "Beschreibung für Testfall 4"));
+				em.persist(new Testfall(3, "Testfall Titel 5", "Beschreibung für Testfall 5"));
+				em.getTransaction().commit();
+			}
+		} catch (Exception e) {
+			// Fehlerbehandlung: Bei einer Ausnahme wird die Transaktion zurückgerollt,
+			// um Dateninkonsistenzen zu vermeiden.
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			System.err.println("Fehler beim Erstellen der initialen Testfaelle:" + e.getMessage());
+		}
+
+		liste = em.createQuery("SELECT t FROM Testfall t", Testfall.class).getResultList();
 	}
 
 	public List<Testfall> getListe() {
-		// System.out.println("getListe() aufgerufen. Aktuelle Größe: " + liste.size());
-		// // Kann sehr gesprächig sein
 		return liste;
 	}
 
@@ -45,31 +62,68 @@ public class Testfallliste implements Serializable {
 		this.liste = liste;
 	}
 
-	public void speichern() {
-		System.out.println("--- Zustand der Testfallliste VOR dem Speichern (im speichern() Methode) ---");
-		for (Testfall tf : liste) {
-			System.out.println("  ID: " + tf.getId() + ", Titel: " + tf.getTestfallTitel() + ", Aktuelles Ergebnis: '"
-					+ tf.getErgebnis() + "'");
-		}
-
-		System.out.println("--- Zustand der Testfallliste NACH dem Speichern (im speichern() Methode) ---");
-		for (Testfall tf : liste) {
-			System.out.println("  ID: " + tf.getId() + ", Titel: " + tf.getTestfallTitel()
-					+ ", Gespeichertes Ergebnis: '" + tf.getErgebnis() + "'");
-		}
-
-		info();
+	public String getNeuerTestfallTitel() {
+		return neuerTestfallTitel;
 	}
 
-	public static void info() {
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testergebnisse erfolgreich gespeichert."));
+	public void setNeuerTestfallTitel(String neuerTestfallTitel) {
+		this.neuerTestfallTitel = neuerTestfallTitel;
+	}
+
+	public String getNeueTestfallBeschreibung() {
+		return neueTestfallBeschreibung;
+	}
+
+	public void setNeueTestfallBeschreibung(String neueTestfallBeschreibung) {
+		this.neueTestfallBeschreibung = neueTestfallBeschreibung;
+	}
+
+	public int getNeueZuErfuellendeAnforderung() {
+		return neueZuErfuellendeAnforderung;
+	}
+
+	public void setNeueZuErfuellendeAnforderung(int neueZuErfuellendeAnforderung) {
+		this.neueZuErfuellendeAnforderung = neueZuErfuellendeAnforderung;
+	}
+
+	public void erstelleTestfall() {
+
+		if ( (neueZuErfuellendeAnforderung != 0 && neuerTestfallTitel != null && !neuerTestfallTitel.trim().isEmpty() && neueTestfallBeschreibung != null
+				&& !neueTestfallBeschreibung.trim().isEmpty())) {
+
+			try {
+				em.getTransaction().begin();
+				Testfall neuerTestfall = new Testfall(neueZuErfuellendeAnforderung, neuerTestfallTitel, neueTestfallBeschreibung);
+				em.persist(neuerTestfall);
+				em.getTransaction().commit();
+
+				liste = em.createQuery("SELECT t FROM Testfall t", Testfall.class).getResultList();
+
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testfall erfolgreich erfasst."));
+
+				this.neuerTestfallTitel = null;
+				this.neueTestfallBeschreibung = null;
+				this.neueZuErfuellendeAnforderung = 0;
+
+			} catch (Exception e) {
+				// Bei Fehlern wird die Transaktion zurückgerollt, um Dateninkonsistenzen zu
+				// verhindern.
+				if (em.getTransaction().isActive()) {
+					em.getTransaction().rollback();
+				}
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Fehler!", "Unerwarteter Fehler beim Speichern des Testfalles: " + e.getMessage()));
+			}
+
+		}
+
 	}
 
 	public List<SelectItem> getTestfaelleAsSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<>();
 		for (Testfall testfall : liste) {
-			selectItems.add(new SelectItem(testfall.getId(), testfall.getTestfallTitel()));
+			selectItems.add(new SelectItem(testfall.getTestfallTitel()));
 		}
 		return selectItems;
 	}

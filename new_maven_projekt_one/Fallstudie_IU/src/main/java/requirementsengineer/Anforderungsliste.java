@@ -123,7 +123,9 @@ public class Anforderungsliste implements Serializable {
 		List<SelectItem> selectItems = new ArrayList<>();
 		if (liste != null) {
 			for (Anforderung anforderung : liste) {
-				selectItems.add(new SelectItem(anforderung.getAnforderungstitel()));
+				// Nützt anforderung.getID() als value und
+				// anforderung.getAnforderungstitel() als label
+				selectItems.add(new SelectItem(anforderung.getID(), anforderung.getAnforderungstitel()));
 			}
 		}
 		return selectItems;
