@@ -16,7 +16,7 @@
 						<p:outputLabel for="username" value="Benutzername" />
 					</h5>
 					<p:inputText id="username" placeholder="Benutzername" size="28"
-						required="true" value="#{loginController.benutzer.name}">
+						required="true" value="#{loginController.usernameInput}">
 						<f:event type="jakarta.faces.event.PostValidateEvent"
 							listener="#{loginController.postValidateName}" />
 					</p:inputText>
@@ -28,10 +28,9 @@
 					<h5>
 						<p:outputLabel for="password" value="Passwort" />
 					</h5>
-					<p:password id="password"
-						value="#{loginController.benutzer.passwort}" required="true"
-						validator="#{loginController.validateLogin}" size="25"
-						toggleMask="true" redisplay="true" />
+					<p:password id="password" value="#{loginController.passwordInput}"
+						required="true" validator="#{loginController.validateLogin}"
+						size="25" toggleMask="true" redisplay="true" />
 					<p:message for="password">
 						<p:autoUpdate />
 					</p:message>
