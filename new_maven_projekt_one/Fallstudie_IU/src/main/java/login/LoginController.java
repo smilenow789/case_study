@@ -54,7 +54,6 @@ public class LoginController implements Serializable {
 				em.getTransaction().rollback();
 			}
 			System.err.println("Error creating initial users: " + e.getMessage());
-			// You might want to log this error more formally
 		}
 	}
 
