@@ -61,6 +61,18 @@
       <version>14.0.0</version>
       <classifier>jakarta</classifier>
     </dependency>
+    
+    <dependency>
+    	<groupId>org.hibernate</groupId>
+    	<artifactId>hibernate-core</artifactId>
+    	<version>6.4.4.Final</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>mysql</groupId>
+    	<artifactId>mysql-connector-java</artifactId>
+    	<version>8.0.33</version>
+    </dependency>
    
    
 <dependency>
