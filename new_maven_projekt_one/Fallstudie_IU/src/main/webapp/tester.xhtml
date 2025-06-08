@@ -16,14 +16,13 @@
 
 
 			<p:dataTable var="zugewiesenerTestfall"
-				value="#{testfallliste.liste}" styleClass="ui-datatable"
-				rowKey="#{zugewiesenerTestfall.id}">
+				value="#{testfallliste.liste}" styleClass="ui-datatable">
 
 				<p:column headerText="Testfall Id:">
-					<h:outputText value="#{zugewiesenerTestfall.id}" />
+					<h:outputText value="#{zugewiesenerTestfall.ID}" />
 				</p:column>
 
-				<p:column headerText="Ihnen zugeordnete Testfälle (Namen):">
+				<p:column headerText="Ihnen zugeordnete Testfälle (Testfalltitel):">
 					<h:outputText value="#{zugewiesenerTestfall.testfallTitel}" />
 				</p:column>
 
@@ -46,7 +45,7 @@
 
 			<f:facet name="footer">
 				<p:commandButton value="Speichern" update="recard growlMessages"
-					action="#{testfallliste.speichern}" />
+					action="#{testfallliste.speicherTestfallErgebnisse}" />
 			</f:facet>
 		</p:card>
 	</h:form>

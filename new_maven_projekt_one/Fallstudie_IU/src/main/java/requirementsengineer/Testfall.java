@@ -24,8 +24,17 @@ public class Testfall implements Serializable {
 	}
 
 	public Testfall(int neueZuErfuellendeAnforderung, String testfallTitel, String beschreibung) {
+		this.zuErfuellendeAnforderung = neueZuErfuellendeAnforderung;
 		this.testfallTitel = testfallTitel;
 		this.beschreibung = beschreibung;
+	}
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
 	}
 
 	public String getTestfallTitel() {
@@ -60,14 +69,4 @@ public class Testfall implements Serializable {
 		this.zuErfuellendeAnforderung = zuErfuellendeAnforderung;
 	}
 
-	/*
-	 * // Implementierung von equals und hashCode basierend auf der ID
-	 * 
-	 * @Override public boolean equals(Object o) { if (this == o) return true; if (o
-	 * == null || getClass() != o.getClass()) return false; Testfall testfall =
-	 * (Testfall) o; return id == testfall.id; }
-	 * 
-	 * @Override public int hashCode() { return Objects.hash(id); }
-	 * 
-	 */
 }

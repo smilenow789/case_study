@@ -50,8 +50,8 @@ public class Testfallliste implements Serializable {
 			}
 			System.err.println("Fehler beim Erstellen der initialen Testfaelle:" + e.getMessage());
 		}
-
 		liste = em.createQuery("SELECT t FROM Testfall t", Testfall.class).getResultList();
+
 	}
 
 	public List<Testfall> getListe() {
@@ -88,12 +88,13 @@ public class Testfallliste implements Serializable {
 
 	public void erstelleTestfall() {
 
-		if ( (neueZuErfuellendeAnforderung != 0 && neuerTestfallTitel != null && !neuerTestfallTitel.trim().isEmpty() && neueTestfallBeschreibung != null
-				&& !neueTestfallBeschreibung.trim().isEmpty())) {
+		if ((neueZuErfuellendeAnforderung != 0 && neuerTestfallTitel != null && !neuerTestfallTitel.trim().isEmpty()
+				&& neueTestfallBeschreibung != null && !neueTestfallBeschreibung.trim().isEmpty())) {
 
 			try {
 				em.getTransaction().begin();
-				Testfall neuerTestfall = new Testfall(neueZuErfuellendeAnforderung, neuerTestfallTitel, neueTestfallBeschreibung);
+				Testfall neuerTestfall = new Testfall(neueZuErfuellendeAnforderung, neuerTestfallTitel,
+						neueTestfallBeschreibung);
 				em.persist(neuerTestfall);
 				em.getTransaction().commit();
 
@@ -118,6 +119,33 @@ public class Testfallliste implements Serializable {
 
 		}
 
+	}
+
+	public void speicherTestfallErgebnisse() {
+
+		try {
+			em.getTransaction().begin();
+			if (liste != null) {
+				for (Testfall t : liste) {
+					em.merge(t);
+				}
+			}
+			em.getTransaction().commit();
+
+			liste = em.createQuery("SELECT t FROM Testfall t", Testfall.class).getResultList();
+
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testfallergebnisse erfolgreich erfasst."));
+
+		} catch (Exception e) {
+			// Bei Fehlern wird die Transaktion zurückgerollt, um Dateninkonsistenzen zu
+			// verhindern.
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fehler!",
+					"Unerwarteter Fehler beim Speichern der Testfallergebnisse: " + e.getMessage()));
+		}
 	}
 
 	public List<SelectItem> getTestfaelleAsSelectItems() {
