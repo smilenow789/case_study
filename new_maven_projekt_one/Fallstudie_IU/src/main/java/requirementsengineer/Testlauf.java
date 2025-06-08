@@ -1,40 +1,34 @@
 package requirementsengineer;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.inject.Named;
-import jakarta.inject.Inject;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
 
-@Named
-@RequestScoped
+@Entity
 public class Testlauf implements Serializable {
 
-	private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int ID;
 	private String testlaufTitel;
 	private String beschreibung;
-	private int zugehoerigerTestfall;
 	private String zugehoerigerTester;
-	private List<Integer> ausgewaehlteTestfaelle;
 
-	@Inject
-	private Testfallliste testfallliste;
-
-	public Testlauf() {
-		ausgewaehlteTestfaelle = new ArrayList<>();
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }) // Cascade operations for Testfall
+	@JoinTable(name = "testlauf_testfall", // Name of the join table
+			joinColumns = @JoinColumn(name = "testlauf_id"), // Column in join table referring to Testlauf ID
+			inverseJoinColumns = @JoinColumn(name = "testfall_id") // Column in join table referring to Testfall ID
+	)
+	private Set<Testfall> ausgewaehlteTestfaelle = new HashSet<>(); // Initialize set
 
 	public String getTestlaufTitel() {
 		return testlaufTitel;
@@ -52,20 +46,12 @@ public class Testlauf implements Serializable {
 		this.beschreibung = beschreibung;
 	}
 
-	public List<Integer> getAusgewaehlteTestfaelle() {
+	public Set<Testfall> getAusgewaehlteTestfaelle() {
 		return ausgewaehlteTestfaelle;
 	}
 
-	public void setAusgewaehlteTestfaelle(List<Integer> ausgewaehlteTestfaelle) {
+	public void setAusgewaehlteTestfaelle(Set<Testfall> ausgewaehlteTestfaelle) {
 		this.ausgewaehlteTestfaelle = ausgewaehlteTestfaelle;
-	}
-
-	public int getZugehoerigerTestfall() {
-		return zugehoerigerTestfall;
-	}
-
-	public void setZugehoerigerTestfall(int zugehoerigerTestfall) {
-		this.zugehoerigerTestfall = zugehoerigerTestfall;
 	}
 
 	public String getZugehoerigerTester() {
@@ -76,35 +62,15 @@ public class Testlauf implements Serializable {
 		this.zugehoerigerTester = zugehoerigerTester;
 	}
 
-	public Testlauf(int id, String testlaufTitel, String beschreibung, int zugehoerigerTestfall,
+	public Testlauf() {
+	}
+
+	public Testlauf(String testlaufTitel, String beschreibung, Set<Testfall> ausgewaehlteTestfaelle,
 			String zugehoerigerTester) {
-		this.id = id;
 		this.testlaufTitel = testlaufTitel;
 		this.beschreibung = beschreibung;
-		this.zugehoerigerTestfall = zugehoerigerTestfall;
+		this.ausgewaehlteTestfaelle = ausgewaehlteTestfaelle;
 		this.zugehoerigerTester = zugehoerigerTester;
-		this.ausgewaehlteTestfaelle = new ArrayList<>();
-	}
-
-	public void testlaufErstellen() {
-		System.out.println("Neuer Testlauf erstellt:");
-		System.out.println("Titel: " + this.testlaufTitel);
-		System.out.println("Beschreibung: " + this.beschreibung);
-		System.out.println("Ausgewählte Testfall-IDs: " + this.ausgewaehlteTestfaelle);
-		System.out.println("Ausgewählter Tester: " + this.zugehoerigerTester);
-
-		// Felder leeren nach erstellung oder navigation
-		this.testlaufTitel = null;
-		this.beschreibung = null;
-		this.ausgewaehlteTestfaelle.clear();
-		this.zugehoerigerTester = null;
-
-		Testlauf.info();
-	}
-
-	public static void info() {
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testlauf erfolgreich erfasst."));
 	}
 
 }

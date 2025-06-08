@@ -88,8 +88,8 @@ public class Testfallliste implements Serializable {
 
 	public void erstelleTestfall() {
 
-		if ((neueZuErfuellendeAnforderung != 0 && neuerTestfallTitel != null && !neuerTestfallTitel.trim().isEmpty()
-				&& neueTestfallBeschreibung != null && !neueTestfallBeschreibung.trim().isEmpty())) {
+		if (neueZuErfuellendeAnforderung != 0 && neuerTestfallTitel != null && !neuerTestfallTitel.trim().isEmpty()
+				&& neueTestfallBeschreibung != null && !neueTestfallBeschreibung.trim().isEmpty()) {
 
 			try {
 				em.getTransaction().begin();
@@ -151,7 +151,9 @@ public class Testfallliste implements Serializable {
 	public List<SelectItem> getTestfaelleAsSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<>();
 		for (Testfall testfall : liste) {
-			selectItems.add(new SelectItem(testfall.getTestfallTitel()));
+			// Corrected: Use testfall.getID() as the value and testfall.getTestfallTitel()
+			// as the label
+			selectItems.add(new SelectItem(testfall.getID(), testfall.getTestfallTitel()));
 		}
 		return selectItems;
 	}

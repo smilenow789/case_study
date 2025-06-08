@@ -1,5 +1,6 @@
 requirementsengineer\Anforderungsliste.class
 testmanager\Benutzerliste.class
+requirementsengineer\Testlaufliste.class
 requirementsengineer\Testfallliste.class
 login\Benutzer.class
 requirementsengineer\Testfall.class

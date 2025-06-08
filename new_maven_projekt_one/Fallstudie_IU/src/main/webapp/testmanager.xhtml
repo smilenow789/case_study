@@ -16,8 +16,9 @@
 			<div>
 				<div>
 					<h5>Titel des Testlaufs</h5>
-					<p:inputText id="testlauftitel" value="#{testlauf.testlaufTitel}"
-						required="true" width="75rem" />
+					<p:inputText id="testlauftitel"
+						value="#{testlaufliste.neuerTestlaufTitel}" required="true"
+						width="75rem" />
 					<p:message for="testlauftitel">
 						<p:autoUpdate />
 					</p:message>
@@ -25,8 +26,8 @@
 				<div>
 					<h5>Beschreibung des Testlaufes</h5>
 					<p:textEditor id="beschreibung" widgetVar="editor1"
-						value="#{testlauf.beschreibung}" height="300px" width="75rem"
-						required="true" />
+						value="#{testlaufliste.neueTestlaufBeschreibung}" height="300px"
+						width="75rem" required="true" />
 					<p:message for="beschreibung">
 						<p:autoUpdate />
 					</p:message>
@@ -34,23 +35,20 @@
 				<div>
 					<h5>Zugehörige Testfälle auswählen</h5>
 					<p:selectManyCheckbox id="ausgewaehlteTestfaelle"
-						value="#{testlauf.ausgewaehlteTestfaelle}" layout="responsive"
-						columns="3">
+						value="#{testlaufliste.neueAusgewaehlteTestfaelleIds}"
+						layout="responsive" columns="3" required="true">
 						<f:selectItems value="#{testfallliste.testfaelleAsSelectItems}" />
 					</p:selectManyCheckbox>
+					<p:message for="ausgewaehlteTestfaelle">
+						<p:autoUpdate />
+					</p:message>
 				</div>
-
-
-
-
-
-
 
 				<div>
 					<h5>Tester zuweisen</h5>
 					<p:selectOneRadio id="ausgewaehlterTester"
-						value="#{testlauf.zugehoerigerTester}" layout="responsive"
-						columns="3" required="true"
+						value="#{testlaufliste.neuerZugehoerigerTester}"
+						layout="responsive" columns="3" required="true"
 						requiredMessage="Bitte wählen Sie ein Tester aus.">
 						<f:selectItems value="#{benutzerliste.testerListe}" />
 					</p:selectOneRadio>
@@ -58,15 +56,10 @@
 						<p:autoUpdate />
 					</p:message>
 				</div>
-
-
-
-
-
 			</div>
 			<f:facet name="footer">
 				<p:commandButton value="Testlauf erfassen"
-					action="#{testlauf.testlaufErstellen}"
+					action="#{testlaufliste.testlaufErstellen}"
 					update="recard growlMessages" />
 			</f:facet>
 		</p:card>
