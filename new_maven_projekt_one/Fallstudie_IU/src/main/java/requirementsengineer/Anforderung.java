@@ -1,12 +1,17 @@
 package requirementsengineer;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Anforderung implements Serializable {
@@ -17,9 +22,12 @@ public class Anforderung implements Serializable {
 	private String anforderungstitel;
 	private String beschreibung;
 
-//	@Inject
-	// @OneToMany
-	// private Anforderungsliste anforderungsliste;
+	// Definition der One-to-Many-Beziehung zu Testfall
+	// 'mappedBy' zeigt an, dass die 'testfall' Seite die Beziehung verwaltet
+	// CascadeType.ALL sorgt dafür, dass abhängige Operationen (z.B. Löschen)
+	// weitergegeben werden. Optional, je nach Geschäftslogik.
+	@OneToMany(mappedBy = "zuErfuellendeAnforderung", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Testfall> zugehoerigeTestfaelle = new HashSet<>(); // Initialisierung des Sets
 
 	public Anforderung() {
 	}
@@ -54,9 +62,24 @@ public class Anforderung implements Serializable {
 		this.beschreibung = beschreibung;
 	}
 
-	public static void info() {
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Anforderung erfolgreich erfasst."));
+	public Set<Testfall> getZugehoerigeTestfaelle() {
+		return zugehoerigeTestfaelle;
+	}
+
+	public void setZugehoerigeTestfaelle(Set<Testfall> zugehoerigeTestfaelle) {
+		this.zugehoerigeTestfaelle = zugehoerigeTestfaelle;
+	}
+
+	// Hilfsmethoden zum Hinzufügen/Entfernen von Testfällen, um die Beziehung
+	// beidseitig zu verwalten
+	public void addTestfall(Testfall testfall) {
+		this.zugehoerigeTestfaelle.add(testfall);
+		testfall.setZuErfuellendeAnforderung(this);
+	}
+
+	public void removeTestfall(Testfall testfall) {
+		this.zugehoerigeTestfaelle.remove(testfall);
+		testfall.setZuErfuellendeAnforderung(null);
 	}
 
 }

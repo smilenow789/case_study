@@ -8,7 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Testfall implements Serializable {
@@ -19,7 +21,13 @@ public class Testfall implements Serializable {
 	private String testfallTitel;
 	private String beschreibung;
 	private String ergebnis = "noch nicht ausgeführt";
-	private int zuErfuellendeAnforderung = 0;
+
+	// Viele Testfälle können einer Anforderung zugeordnet sein (Many-to-One)
+	// Die JoinColumn definiert die Fremdschlüsselspalte in der Testfall-Tabelle.
+	// 'nullable = true' erlaubt, dass ein Testfall keine Anforderung hat.
+	@ManyToOne
+	@JoinColumn(name = "anforderung_id", nullable = true) // Fremdschlüsselspalte in Testfall-Tabelle
+	private Anforderung zuErfuellendeAnforderung; // Direkte Referenz zum Anforderung-Objekt
 
 	@ManyToMany(mappedBy = "ausgewaehlteTestfaelle") // Testlauf owns the relationship
 	private Set<Testlauf> zugehoerigeTestlaeufe = new HashSet<>(); // Initialize to prevent NullPointerException
@@ -65,11 +73,11 @@ public class Testfall implements Serializable {
 		this.ergebnis = ergebnis;
 	}
 
-	public int getZuErfuellendeAnforderung() {
+	public Anforderung getZuErfuellendeAnforderung() {
 		return zuErfuellendeAnforderung;
 	}
 
-	public void setZuErfuellendeAnforderung(int zuErfuellendeAnforderung) {
+	public void setZuErfuellendeAnforderung(Anforderung zuErfuellendeAnforderung) {
 		this.zuErfuellendeAnforderung = zuErfuellendeAnforderung;
 	}
 
@@ -84,8 +92,8 @@ public class Testfall implements Serializable {
 	public Testfall() {
 	}
 
-	public Testfall(int neueZuErfuellendeAnforderung, String testfallTitel, String beschreibung) {
-		this.zuErfuellendeAnforderung = neueZuErfuellendeAnforderung;
+	public Testfall(Anforderung zuErfuellendeAnforderung, String testfallTitel, String beschreibung) {
+		this.zuErfuellendeAnforderung = zuErfuellendeAnforderung;
 		this.testfallTitel = testfallTitel;
 		this.beschreibung = beschreibung;
 	}

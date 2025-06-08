@@ -112,6 +112,9 @@ public class Anforderungsliste implements Serializable {
 						"Fehler!", "Unerwarteter Fehler beim Speichern der Anforderung: " + e.getMessage()));
 			}
 
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Fehler!",
+					"Bitte füllen Sie alle erforderlichen Felder aus."));
 		}
 	}
 
