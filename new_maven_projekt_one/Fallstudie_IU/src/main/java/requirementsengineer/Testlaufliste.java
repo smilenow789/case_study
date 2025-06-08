@@ -1,7 +1,6 @@
 package requirementsengineer;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +21,7 @@ public class Testlaufliste implements Serializable {
 
 	private String neuerTestlaufTitel;
 	private String neueTestlaufBeschreibung;
-	private List<Integer> neueAusgewaehlteTestfaelleIds; // Now stores IDs from UI
+	private List<Integer> neueAusgewaehlteTestfaelleIds;
 	private String neuerZugehoerigerTester;
 
 	public List<Integer> getNeueAusgewaehlteTestfaelleIds() {

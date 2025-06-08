@@ -2,9 +2,10 @@ requirementsengineer\Anforderungsliste.class
 testmanager\Benutzerliste.class
 requirementsengineer\Testlaufliste.class
 requirementsengineer\Testfallliste.class
-login\Benutzer.class
 requirementsengineer\Testfall.class
-producer\EntityManagerProducer.class
-requirementsengineer\Anforderung.class
+login\UserSessionBean.class
 login\LoginController.class
 requirementsengineer\Testlauf.class
+login\Benutzer.class
+producer\EntityManagerProducer.class
+requirementsengineer\Anforderung.class

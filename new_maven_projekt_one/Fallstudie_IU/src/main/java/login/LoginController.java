@@ -21,12 +21,15 @@ import jakarta.persistence.TypedQuery;
 @ViewScoped
 public class LoginController implements Serializable {
 
-	private String usernameInput; // Use a dedicated field for the username input
-	private String passwordInput; // Use a dedicated field for the password input
-	private Benutzer authenticatedBenutzer; // Renamed for clarity
+	private String usernameInput;
+	private String passwordInput;
+	private Benutzer authenticatedBenutzer;
 
 	@Inject
 	private EntityManager em;
+
+	@Inject
+	private UserSessionBean userSessionBean;
 
 	public LoginController() {
 	}
@@ -34,7 +37,7 @@ public class LoginController implements Serializable {
 	@PostConstruct
 	public void benutzerErstellen() {
 		// This block creates initial users if the database is empty.
-		// It's good practice for initial setup.
+		// Nur für initiales Setup
 		try {
 			if (em.createQuery("SELECT COUNT(b) FROM Benutzer b", Long.class).getSingleResult() == 0) {
 				em.getTransaction().begin();
@@ -56,13 +59,6 @@ public class LoginController implements Serializable {
 			System.err.println("Error creating initial users: " + e.getMessage());
 		}
 	}
-
-	// Die benutzerListe wird typischerweise nicht komplett geladen,
-	// sondern direkt in der Validierung abgefragt.
-	// Wenn Sie sie dennoch im View-Scope halten wollen (z.B. für eine Übersicht):
-	// List<Benutzer> benutzerListe;
-	// benutzerListe = em.createQuery("SELECT b FROM Benutzer b",
-	// Benutzer.class).getResultList();
 
 	public void postValidateName(ComponentSystemEvent ev) throws AbortProcessingException {
 		UIInput temp = (UIInput) ev.getComponent();
@@ -88,26 +84,25 @@ public class LoginController implements Serializable {
 
 	public String login() {
 		if (this.authenticatedBenutzer != null) {
+			// Speichern des authentifizierten Benutzers im UserSessionBean
+			userSessionBean.setAuthenticatedUser(this.authenticatedBenutzer);
+
 			String rolle = this.authenticatedBenutzer.getRolle();
 
 			switch (rolle) {
 			case "requirementsengineer":
-				return "requirementsengineer";
-
+				return "/requirementsengineer.xhtml?faces-redirect=true";
 			case "testfallersteller":
-				return "testfallersteller";
-
+				return "/testfallersteller.xhtml?faces-redirect=true";
 			case "testmanager":
-				return "testmanager";
-
+				return "/testmanager.xhtml?faces-redirect=true";
 			case "tester":
-				return "tester";
-
+				return "/tester.xhtml?faces-redirect=true";
 			default:
-				return "login";
+				return "/login.xhtml?faces-redirect=true";
 			}
 		} else {
-			return "login";
+			return "/login.xhtml?faces-redirect=true";
 		}
 	}
 

@@ -16,7 +16,8 @@
 
 
 			<p:dataTable var="zugewiesenerTestfall"
-				value="#{testfallliste.liste}" styleClass="ui-datatable">
+				value="#{testfallliste.zugewieseneTestfaelleListe}"
+				styleClass="ui-datatable">
 
 				<p:column headerText="Testfall Id:">
 					<h:outputText value="#{zugewiesenerTestfall.ID}" />
@@ -37,10 +38,11 @@
 
 			</p:dataTable>
 
-			<h:panelGroup rendered="#{empty testfallliste.liste}">
+			<h:panelGroup
+				rendered="#{empty testfallliste.zugewieseneTestfaelleListe}">
 				<p class="empty-table-message">Es sind keine Testfälle
-					vorhanden. Bitte erstellen Sie zuerst Testfälle auf der
-					Testfallersteller-Seite.</p>
+					vorhanden. Bitte kontaktieren Sie den Testfallersteller, damit er
+					Testfälle für Sie erstellen kann.</p>
 			</h:panelGroup>
 
 			<f:facet name="footer">
