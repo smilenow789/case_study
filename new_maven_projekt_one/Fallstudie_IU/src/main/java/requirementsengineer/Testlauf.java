@@ -18,7 +18,7 @@ public class Testlauf implements Serializable {
 	private String testlaufTitel;
 	private String beschreibung;
 	private int zugehoerigerTestfall;
-	private int zugehoerigerTester;
+	private String zugehoerigerTester;
 	private List<Integer> ausgewaehlteTestfaelle;
 
 	@Inject
@@ -68,16 +68,16 @@ public class Testlauf implements Serializable {
 		this.zugehoerigerTestfall = zugehoerigerTestfall;
 	}
 
-	public int getZugehoerigerTester() {
+	public String getZugehoerigerTester() {
 		return zugehoerigerTester;
 	}
 
-	public void setZugehoerigerTester(int zugehoerigerTester) {
+	public void setZugehoerigerTester(String zugehoerigerTester) {
 		this.zugehoerigerTester = zugehoerigerTester;
 	}
 
 	public Testlauf(int id, String testlaufTitel, String beschreibung, int zugehoerigerTestfall,
-			int zugehoerigerTester) {
+			String zugehoerigerTester) {
 		this.id = id;
 		this.testlaufTitel = testlaufTitel;
 		this.beschreibung = beschreibung;
@@ -91,11 +91,13 @@ public class Testlauf implements Serializable {
 		System.out.println("Titel: " + this.testlaufTitel);
 		System.out.println("Beschreibung: " + this.beschreibung);
 		System.out.println("Ausgewählte Testfall-IDs: " + this.ausgewaehlteTestfaelle);
+		System.out.println("Ausgewählter Tester: " + this.zugehoerigerTester);
 
 		// Felder leeren nach erstellung oder navigation
 		this.testlaufTitel = null;
 		this.beschreibung = null;
 		this.ausgewaehlteTestfaelle.clear();
+		this.zugehoerigerTester = null;
 
 		Testlauf.info();
 	}

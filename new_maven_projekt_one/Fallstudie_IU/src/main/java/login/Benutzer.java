@@ -10,8 +10,9 @@ public class Benutzer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int ID;
-	String name;
-	String passwort;
+	private String name;
+	private String passwort;
+	private String rolle;
 
 	public String getName() {
 		return name;
@@ -29,10 +30,19 @@ public class Benutzer {
 		this.passwort = passwort;
 	}
 
-	public Benutzer(String name, String passwort) {
+	public void setRolle(String rolle) {
+		this.rolle = rolle;
+	}
+
+	public String getRolle() {
+		return rolle;
+	}
+
+	public Benutzer(String name, String passwort, String rolle) {
 		super();
 		this.name = name;
 		this.passwort = passwort;
+		this.rolle = rolle;
 	}
 
 	public Benutzer() {

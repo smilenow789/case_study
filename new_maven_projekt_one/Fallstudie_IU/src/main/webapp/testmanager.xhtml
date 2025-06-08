@@ -22,10 +22,6 @@
 						<p:autoUpdate />
 					</p:message>
 				</div>
-
-
-
-
 				<div>
 					<h5>Beschreibung des Testlaufes</h5>
 					<p:textEditor id="beschreibung" widgetVar="editor1"
@@ -35,12 +31,6 @@
 						<p:autoUpdate />
 					</p:message>
 				</div>
-
-
-
-
-
-
 				<div>
 					<h5>Zugehörige Testfälle auswählen</h5>
 					<p:selectManyCheckbox id="ausgewaehlteTestfaelle"
@@ -49,6 +39,30 @@
 						<f:selectItems value="#{testfallliste.testfaelleAsSelectItems}" />
 					</p:selectManyCheckbox>
 				</div>
+
+
+
+
+
+
+
+				<div>
+					<h5>Tester zuweisen</h5>
+					<p:selectOneRadio id="ausgewaehlterTester"
+						value="#{testlauf.zugehoerigerTester}" layout="responsive"
+						columns="3" required="true"
+						requiredMessage="Bitte wählen Sie ein Tester aus.">
+						<f:selectItems value="#{benutzerliste.testerListe}" />
+					</p:selectOneRadio>
+					<p:message for="ausgewaehlterTester">
+						<p:autoUpdate />
+					</p:message>
+				</div>
+
+
+
+
+
 			</div>
 			<f:facet name="footer">
 				<p:commandButton value="Testlauf erfassen"

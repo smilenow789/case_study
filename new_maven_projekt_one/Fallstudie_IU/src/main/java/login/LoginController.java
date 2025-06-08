@@ -38,13 +38,13 @@ public class LoginController implements Serializable {
 		try {
 			if (em.createQuery("SELECT COUNT(b) FROM Benutzer b", Long.class).getSingleResult() == 0) {
 				em.getTransaction().begin();
-				em.persist(new Benutzer("Admin", "123"));
-				em.persist(new Benutzer("requirementsengineer", "456"));
-				em.persist(new Benutzer("testfallersteller", "456"));
-				em.persist(new Benutzer("testmanager", "456"));
-				em.persist(new Benutzer("tester", "456"));
-				em.persist(new Benutzer("testerEins", "456"));
-				em.persist(new Benutzer("testerZwei", "456"));
+				em.persist(new Benutzer("Admin", "123", "requirementsengineer"));
+				em.persist(new Benutzer("NameRequirementsengineer", "456", "requirementsengineer"));
+				em.persist(new Benutzer("NameTestfallersteller", "456", "testfallersteller"));
+				em.persist(new Benutzer("NameTestmanager", "456", "testmanager"));
+				em.persist(new Benutzer("Nametester", "456", "tester"));
+				em.persist(new Benutzer("NametesterEins", "456", "tester"));
+				em.persist(new Benutzer("NametesterZwei", "456", "tester"));
 				em.getTransaction().commit();
 			}
 		} catch (Exception e) {
@@ -88,16 +88,22 @@ public class LoginController implements Serializable {
 
 	public String login() {
 		if (this.authenticatedBenutzer != null) {
-			String userName = this.authenticatedBenutzer.getName();
-			if (userName.equals("Admin") || userName.equals("requirementsengineer")) {
+			String rolle = this.authenticatedBenutzer.getRolle();
+
+			switch (rolle) {
+			case "requirementsengineer":
 				return "requirementsengineer";
-			} else if (userName.equals("testfallersteller")) {
+
+			case "testfallersteller":
 				return "testfallersteller";
-			} else if (userName.equals("testmanager")) {
+
+			case "testmanager":
 				return "testmanager";
-			} else if (userName.equals("tester")) {
+
+			case "tester":
 				return "tester";
-			} else {
+
+			default:
 				return "login";
 			}
 		} else {
