@@ -13,6 +13,7 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
+import login.Benutzer;
 import login.UserSessionBean;
 
 @Named
@@ -192,29 +193,39 @@ public class Testfallliste implements Serializable {
 	// Lädt die Testfälle, die dem aktuell eingeloggten Tester zugewiesen sind.
 	// Diese Methode wird vom @PostConstruct und nach dem Speichern aufgerufen.
 	public void ladenZugewieseneTestfaelle() {
-		System.out.println("Start Methode ladenZugewoeseneTestfaelle");
 		String currentTesterName = userSessionBean.getAuthenticatedUsername();
-		System.out.println("CurrentTesterName: " + currentTesterName);
+
 		if (currentTesterName != null && userSessionBean.getAuthenticatedUserRole().equals("tester")) {
 			try {
-				// Query, um Testfälle zu finden, die mit Testläufen verknüpft sind,
-				// welche dem aktuellen Tester zugewiesen sind.
-				System.out.println("Start SQL");
-				TypedQuery<Testfall> query = em.createQuery(
-						"SELECT DISTINCT tf FROM Testfall tf JOIN tf.zugehoerigeTestlaeufe tl WHERE tl.zugehoerigerTester = :testerName",
-						Testfall.class);
-				query.setParameter("testerName", currentTesterName);
-				zugewieseneTestfaelleListe = query.getResultList();
-				System.out.println(zugewieseneTestfaelleListe);
+				// Query to find the Benutzer entity for the current tester
+				TypedQuery<Benutzer> benutzerQuery = em.createQuery("SELECT b FROM Benutzer b WHERE b.name = :username",
+						Benutzer.class);
+				benutzerQuery.setParameter("username", currentTesterName);
+				Benutzer currentTester = benutzerQuery.getSingleResult();
+
+				if (currentTester != null) {
+					// **Crucial Change Here:**
+					// Query to find Testfälle that are assigned to this specific Benutzer
+					TypedQuery<Testfall> query = em.createQuery(
+							"SELECT tf FROM Testfall tf JOIN tf.zugewieseneBenutzer b WHERE b = :tester",
+							Testfall.class);
+					query.setParameter("tester", currentTester); // Pass the Benutzer
+					zugewieseneTestfaelleListe = query.getResultList();
+				} else {
+					zugewieseneTestfaelleListe = new ArrayList<>();
+				}
+			} catch (NoResultException e) {
+				// No user found with the given name, or no test cases assigned
+				zugewieseneTestfaelleListe = new ArrayList<>();
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Fehler!", "Fehler beim Laden Ihrer zugewiesenen Testfälle: " + e.getMessage()));
-				zugewieseneTestfaelleListe = new ArrayList<>(); // Leere Liste bei Fehler
+				zugewieseneTestfaelleListe = new ArrayList<>();
 			}
 		} else {
-			// Wenn kein Tester eingeloggt ist oder die Rolle nicht 'tester' ist, keine
-			// Testfälle anzeigen
+			// If no Tester is logged in or the role is not 'tester', show no test cases
 			zugewieseneTestfaelleListe = new ArrayList<>();
+			System.out.println("No tester logged in or role is not 'tester'.");
 		}
 	}
 

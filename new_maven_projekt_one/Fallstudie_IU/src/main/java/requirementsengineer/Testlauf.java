@@ -24,10 +24,6 @@ public class Testlauf implements Serializable {
 	private String beschreibung;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "testlauf_benutzer", joinColumns = @JoinColumn(name = "testlauf_id"), inverseJoinColumns = @JoinColumn(name = "benutzer_id"))
-	private Set<Benutzer> zugehoerigerTester = new HashSet<>();
-
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "testlauf_testfall", joinColumns = @JoinColumn(name = "testlauf_id"), inverseJoinColumns = @JoinColumn(name = "testfall_id"))
 	private Set<Testfall> ausgewaehlteTestfaelle = new HashSet<>();
 
@@ -47,14 +43,6 @@ public class Testlauf implements Serializable {
 		this.beschreibung = beschreibung;
 	}
 
-	public Set<Benutzer> getZugehoerigeTester() {
-		return zugehoerigerTester;
-	}
-
-	public void setZugehoerigeTester(Set<Benutzer> zugehoerigeTester) {
-		this.zugehoerigerTester = zugehoerigeTester;
-	}
-
 	public Set<Testfall> getAusgewaehlteTestfaelle() {
 		return ausgewaehlteTestfaelle;
 	}
@@ -66,12 +54,10 @@ public class Testlauf implements Serializable {
 	public Testlauf() {
 	}
 
-	public Testlauf(String testlaufTitel, String beschreibung, Set<Testfall> ausgewaehlteTestfaelle,
-			Set<Benutzer> zugehoerigeTester) {
+	public Testlauf(String testlaufTitel, String beschreibung, Set<Testfall> ausgewaehlteTestfaelle) {
 		this.testlaufTitel = testlaufTitel;
 		this.beschreibung = beschreibung;
 		this.ausgewaehlteTestfaelle = ausgewaehlteTestfaelle;
-		this.zugehoerigerTester = zugehoerigeTester;
 	}
 
 }

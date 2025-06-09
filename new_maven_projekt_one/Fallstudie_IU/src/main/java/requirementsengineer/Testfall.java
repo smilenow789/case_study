@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -25,13 +26,11 @@ public class Testfall implements Serializable {
 	private String beschreibung;
 	private String ergebnis = "noch nicht ausgeführt";
 
-	// Viele Testfälle können einer Anforderung zugeordnet sein (Many-to-One)
-	// Die JoinColumn definiert die Fremdschlüsselspalte in der Testfall-Tabelle.
-	// 'nullable = true' erlaubt, dass ein Testfall keine Anforderung hat.
-
-	@ManyToOne
-	@JoinColumn(name = "benutzer_id", nullable = true)
-	private Benutzer zugehoerigerBenutzer;
+	// ADD THE NEW ManyToMany MAPPING
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "testfall_benutzer_assignment", // Name for the join table
+			joinColumns = @JoinColumn(name = "testfall_id"), inverseJoinColumns = @JoinColumn(name = "benutzer_id"))
+	private Set<Benutzer> zugewieseneBenutzer = new HashSet<>();
 
 	@ManyToOne
 	@JoinColumn(name = "anforderung_id", nullable = true) // Fremdschlüsselspalte in Testfall-Tabelle
@@ -78,12 +77,12 @@ public class Testfall implements Serializable {
 		this.ergebnis = ergebnis;
 	}
 
-	public Benutzer getZugehoerigerBenutzer() {
-		return zugehoerigerBenutzer;
+	public Set<Benutzer> getZugewieseneBenutzer() {
+		return zugewieseneBenutzer;
 	}
 
-	public void setZugehoerigerBenutzer(Benutzer zugehoerigerBenutzer) {
-		this.zugehoerigerBenutzer = zugehoerigerBenutzer;
+	public void setZugewieseneBenutzer(Set<Benutzer> zugewieseneBenutzer) {
+		this.zugewieseneBenutzer = zugewieseneBenutzer;
 	}
 
 	public Anforderung getZuErfuellendeAnforderung() {
@@ -109,6 +108,12 @@ public class Testfall implements Serializable {
 		this.zuErfuellendeAnforderung = zuErfuellendeAnforderung;
 		this.testfallTitel = testfallTitel;
 		this.beschreibung = beschreibung;
+	}
+
+	// Add helper methods to manage the ManyToMany relationship
+	public void addZugewiesenerBenutzer(Benutzer benutzer) {
+		this.zugewieseneBenutzer.add(benutzer);
+		benutzer.getZugewieseneTestfaelle().add(this); // Assuming Benutzer has a mappedBy relationship
 	}
 
 }

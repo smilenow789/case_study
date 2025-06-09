@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import requirementsengineer.Testfall;
@@ -21,8 +22,9 @@ public class Benutzer {
 	private String passwort;
 	private String rolle;
 
-	@OneToMany(mappedBy = "zugehoerigerBenutzer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Testfall> zugehoerigeTestfaelle = new HashSet<>();
+    // Add the ManyToMany mapping
+    @ManyToMany(mappedBy = "zugewieseneBenutzer")
+    private Set<Testfall> zugewieseneTestfaelle = new HashSet<>();
 
 	public int getID() {
 		return ID;
@@ -56,13 +58,13 @@ public class Benutzer {
 		return rolle;
 	}
 
-	public Set<Testfall> getZugehoerigeTestfaelle() {
-		return zugehoerigeTestfaelle;
-	}
+    public Set<Testfall> getZugewieseneTestfaelle() {
+        return zugewieseneTestfaelle;
+    }
 
-	public void setZugehoerigeTestfaelle(Set<Testfall> zugehoerigeTestfaelle) {
-		this.zugehoerigeTestfaelle = zugehoerigeTestfaelle;
-	}
+    public void setZugewieseneTestfaelle(Set<Testfall> zugewieseneTestfaelle) {
+        this.zugewieseneTestfaelle = zugewieseneTestfaelle;
+    }
 
 	public Benutzer(String name, String passwort, String rolle) {
 		super();

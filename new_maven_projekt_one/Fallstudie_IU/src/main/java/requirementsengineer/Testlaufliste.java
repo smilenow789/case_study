@@ -71,26 +71,21 @@ public class Testlaufliste implements Serializable {
 			try {
 				em.getTransaction().begin();
 
-				// Testfall-Entities anhand der IDs abrufen
-				Set<Testfall> selectedTestfaelle = new HashSet<>();
+				// Benutzer-Entity (Tester) anhand der ID abrufen
+				Benutzer tester = em.find(Benutzer.class, neuerZugehoerigerTesterId);
+
+				// Testfall-Entities anhand der IDs abrufen und den Tester zuweisen
+				Set<Testfall> selectedTestfaelle = new java.util.HashSet<>();
 				for (Integer testfallId : neueAusgewaehlteTestfaelleIds) {
 					Testfall testfall = em.find(Testfall.class, testfallId);
 					if (testfall != null) {
+						testfall.addZugewiesenerBenutzer(tester);
+						em.merge(testfall);
 						selectedTestfaelle.add(testfall);
 					}
 				}
 
-				// Benutzer-Entity (Tester) anhand der ID abrufen
-				Set<Benutzer> assignedTesters = new HashSet<>();
-				Benutzer tester = em.find(Benutzer.class, neuerZugehoerigerTesterId);
-				if (tester != null) {
-					assignedTesters.add(tester);
-				}
-
-				// Neuen Testlauf mit den ausgewählten Testfällen und zugewiesenen Testern
-				// erstellen
-				Testlauf neuerTestlauf = new Testlauf(neuerTestlaufTitel, neueTestlaufBeschreibung, selectedTestfaelle,
-						assignedTesters);
+				Testlauf neuerTestlauf = new Testlauf(neuerTestlaufTitel, neueTestlaufBeschreibung, selectedTestfaelle);
 				em.persist(neuerTestlauf);
 
 				// Stellen Sie sicher, dass die bidirektionale Beziehung auch vom Testfall aus
