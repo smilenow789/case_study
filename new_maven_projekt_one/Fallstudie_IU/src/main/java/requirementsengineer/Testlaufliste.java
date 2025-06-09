@@ -13,7 +13,9 @@ import jakarta.inject.Named;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OneToMany;
-import login.Benutzer;
+import model.Benutzer;
+import model.Testfall;
+import model.Testlauf;
 
 @Named
 @ViewScoped

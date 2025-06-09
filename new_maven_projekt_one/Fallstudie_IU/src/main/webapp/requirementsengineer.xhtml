@@ -16,8 +16,8 @@
 			<div>
 				<h5>Titel der Anforderung</h5>
 				<p:inputText id="anforderungstitel"
-					value="#{anforderungsliste.neueAnforderungTitel}" required="true"
-					width="75rem" />
+					value="#{anforderungenController.neueAnforderungTitel}"
+					required="true" width="75rem" />
 				<p:message for="anforderungstitel">
 					<p:autoUpdate />
 				</p:message>
@@ -25,7 +25,7 @@
 					<p:outputLabel for="beschreibung" value="Beschreibung" />
 				</h5>
 				<p:textEditor id="beschreibung" widgetVar="editor1"
-					value="#{anforderungsliste.neueAnforderungBeschreibung}"
+					value="#{anforderungenController.neueAnforderungBeschreibung}"
 					height="300px" width="75rem" required="true" />
 				<p:message for="beschreibung">
 					<p:autoUpdate />
@@ -33,7 +33,7 @@
 			</div>
 			<f:facet name="footer">
 				<p:commandButton value="Anforderung erfassen"
-					action="#{anforderungsliste.erstelleAnforderung}"
+					action="#{anforderungenController.erstelleAnforderung}"
 					update="recard growlMessages" />
 			</f:facet>
 		</p:card>

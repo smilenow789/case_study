@@ -13,8 +13,10 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
-import login.Benutzer;
-import login.UserSessionBean;
+import model.Anforderung;
+import model.Benutzer;
+import model.Testfall;
+import util.UserSessionBean;
 
 @Named
 @ViewScoped
