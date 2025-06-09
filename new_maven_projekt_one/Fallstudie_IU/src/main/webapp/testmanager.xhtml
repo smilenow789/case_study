@@ -45,23 +45,25 @@
 				</div>
 
 				<div>
-					<h5>Tester zuweisen</h5>
-					<p:selectOneRadio id="ausgewaehlterTester"
-						value="#{testlaufliste.neuerZugehoerigerTester}"
-						layout="responsive" columns="3" required="true"
-						requiredMessage="Bitte wählen Sie ein Tester aus.">
-						<f:selectItems value="#{benutzerliste.testerListe}" />
-					</p:selectOneRadio>
-					<p:message for="ausgewaehlterTester">
-						<p:autoUpdate />
-					</p:message>
+					<div>
+						<h5>Tester zuweisen</h5>
+						<p:selectOneRadio id="ausgewaehlterTester"
+							value="#{testlaufliste.neuerZugehoerigerTesterId}"
+							layout="responsive" columns="3" required="true"
+							requiredMessage="Bitte wählen Sie ein Tester aus.">
+							<f:selectItems value="#{benutzerliste.testerListe}" />
+						</p:selectOneRadio>
+						<p:message for="ausgewaehlterTester">
+							<p:autoUpdate />
+						</p:message>
+					</div>
 				</div>
+				<f:facet name="footer">
+					<p:commandButton value="Testlauf erfassen"
+						action="#{testlaufliste.testlaufErstellen}"
+						update="recard growlMessages" />
+				</f:facet>
 			</div>
-			<f:facet name="footer">
-				<p:commandButton value="Testlauf erfassen"
-					action="#{testlaufliste.testlaufErstellen}"
-					update="recard growlMessages" />
-			</f:facet>
 		</p:card>
 
 	</h:form>

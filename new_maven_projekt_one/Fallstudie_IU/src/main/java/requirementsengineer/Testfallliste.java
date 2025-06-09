@@ -2,10 +2,7 @@ package requirementsengineer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -28,9 +25,8 @@ public class Testfallliste implements Serializable {
 	@Inject
 	private UserSessionBean userSessionBean;
 
-	private List<Testfall> liste; // Alle Testfälle
-	private List<Testfall> zugewieseneTestfaelleListe; // Testfälle, die dem eingeloggten Tester zugewiesen sind
-
+	private List<Testfall> liste;
+	private List<Testfall> zugewieseneTestfaelleListe;
 	private String neuerTestfallTitel;
 	private String neueTestfallBeschreibung;
 	private Integer neueZuErfuellendeAnforderungId;
@@ -41,95 +37,33 @@ public class Testfallliste implements Serializable {
 	@PostConstruct
 	public void erstelleTestfallliste() {
 		try {
-			em.getTransaction().begin();
-
-			// Nur initiale Daten erstellen, wenn keine Testfälle oder Testläufe vorhanden
-			// sind.
-			// Dies verhindert das doppelte Erstellen von Daten bei jedem Deployment oder
-			// Neustart.
-			if (em.createQuery("SELECT COUNT(t) FROM Testfall t", Long.class).getSingleResult() == 0
-					|| em.createQuery("SELECT COUNT(tl) FROM Testlauf tl", Long.class).getSingleResult() == 0) {
-
+			// Nur initiale Daten erstellen, wenn keine Testfälle vorhanden sind
+			if (em.createQuery("SELECT COUNT(t) FROM Testfall t", Long.class).getSingleResult() == 0) {
+				em.getTransaction().begin();
 				// Stellen Sie sicher, dass Anforderung-Objekte existieren oder neu erstellt
 				// werden
+				// Query for existing Anforderung entities by title
 				Anforderung anforderung1 = findOrCreateAnforderung("EinsAnforderungsTitel",
 						"BeschreibungAnforderungEins");
 				Anforderung anforderung2 = findOrCreateAnforderung("ZweisAnforderungsTitel",
 						"BeschreibungAnforderungZwei");
 				Anforderung anforderung3 = findOrCreateAnforderung("DreiAnforderungsTitel",
 						"BeschreibungAnforderungDrei");
-
-				// Testfall-Objekte erstellen und persistieren
-				Testfall testfall1 = new Testfall(anforderung1, "Testfall Titel 1", "Beschreibung für Testfall 1");
-				Testfall testfall2 = new Testfall(anforderung2, "Testfall Titel 2", "Beschreibung für Testfall 2");
-				Testfall testfall3 = new Testfall(anforderung2, "Testfall Titel 3", "Beschreibung für Testfall 3");
-				Testfall testfall4 = new Testfall(anforderung3, "Testfall Titel 4", "Beschreibung für Testfall 4");
-				Testfall testfall5 = new Testfall(anforderung3, "Testfall Titel 5", "Beschreibung für Testfall 5");
-				Testfall testfall6 = new Testfall(anforderung1, "Testfall-Titel", "Beschreibung für Testfall 6"); // Aus
-																													// der
-																													// Aufgabenstellung
-
-				em.persist(testfall1);
-				em.persist(testfall2);
-				em.persist(testfall3);
-				em.persist(testfall4);
-				em.persist(testfall5);
-				em.persist(testfall6);
-
-				// Testlauf-Objekte erstellen und Testfälle Testern zuweisen
-				// WICHTIG: Bidirektionale Beziehung synchronisieren!
-
-				// Beispiel: Zuweisung von Testfall 1 und 2 an "Nametester"
-				Set<Testfall> zugewieseneTestfaelleFürNametester = new HashSet<>();
-				zugewieseneTestfaelleFürNametester.add(testfall1);
-				zugewieseneTestfaelleFürNametester.add(testfall2);
-
-				Testlauf testlaufNametester = new Testlauf("Testlauf für Nametester",
-						"Beschreibung des Testlaufes für Nametester", zugewieseneTestfaelleFürNametester, "Nametester");
-				em.persist(testlaufNametester);
-				// Bidirektionale Beziehung synchronisieren
-				testfall1.getZugehoerigeTestlaeufe().add(testlaufNametester);
-				testfall2.getZugehoerigeTestlaeufe().add(testlaufNametester);
-
-				// Beispiel: Zuweisung von Testfall 3 und 4 an "NametesterEins"
-				Set<Testfall> zugewieseneTestfaelleFürNametesterEins = new HashSet<>();
-				zugewieseneTestfaelleFürNametesterEins.add(testfall3);
-				zugewieseneTestfaelleFürNametesterEins.add(testfall4);
-
-				Testlauf testlaufNametesterEins = new Testlauf("Testlauf für NametesterEins",
-						"Beschreibung des Testlaufes für Nametester Eins", zugewieseneTestfaelleFürNametesterEins,
-						"NametesterEins");
-				em.persist(testlaufNametesterEins);
-				// Bidirektionale Beziehung synchronisieren
-				testfall3.getZugehoerigeTestlaeufe().add(testlaufNametesterEins);
-				testfall4.getZugehoerigeTestlaeufe().add(testlaufNametesterEins);
-
-				// Beispiel: Zuweisung von Testfall 5 und 6 an "NametesterZwei"
-				Set<Testfall> zugewieseneTestfaelleFürNametesterZwei = new HashSet<>();
-				zugewieseneTestfaelleFürNametesterZwei.add(testfall5);
-				zugewieseneTestfaelleFürNametesterZwei.add(testfall6);
-
-				Testlauf testlaufNametesterZwei = new Testlauf("Testlauf für NametesterZwei",
-						"Beschreibung des Testlaufes für Nametester Zwei", zugewieseneTestfaelleFürNametesterZwei,
-						"NametesterZwei");
-				em.persist(testlaufNametesterZwei);
-				// Bidirektionale Beziehung synchronisieren
-				testfall5.getZugehoerigeTestlaeufe().add(testlaufNametesterZwei);
-				testfall6.getZugehoerigeTestlaeufe().add(testlaufNametesterZwei);
-
+				em.persist(new Testfall(anforderung1, "Testfall Titel 1", "Beschreibung für Testfall 1"));
+				em.persist(new Testfall(anforderung2, "Testfall Titel 2", "Beschreibung für Testfall 2"));
+				em.persist(new Testfall(anforderung2, "Testfall Titel 3", "Beschreibung für Testfall 3"));
+				em.persist(new Testfall(anforderung3, "Testfall Titel 4", "Beschreibung für Testfall 4"));
+				em.persist(new Testfall(anforderung3, "Testfall Titel 5", "Beschreibung für Testfall 5"));
+				em.getTransaction().commit();
 			}
-			em.getTransaction().commit();
 		} catch (Exception e) {
 			if (em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
 			}
-			System.err.println("Fehler beim Erstellen der initialen Testfaelle und Testlaeufe: " + e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fehler!",
-					"Unerwarteter Fehler beim Initialisieren der Testfälle und Testläufe: " + e.getMessage()));
+					"Unerwarteter Fehler beim Initialisieren der Testfälle: " + e.getMessage()));
 		}
-		// Alle Testfälle laden (für den Fall, dass diese Liste auch benötigt wird)
 		liste = em.createQuery("SELECT t FROM Testfall t", Testfall.class).getResultList();
-		// Die zugewiesenen Testfälle für den aktuell eingeloggten Benutzer laden
 		ladenZugewieseneTestfaelle();
 	}
 
@@ -140,7 +74,7 @@ public class Testfallliste implements Serializable {
 					.setParameter("titel", titel).getSingleResult();
 		} catch (NoResultException e) {
 			Anforderung newAnf = new Anforderung(titel, beschreibung);
-			em.persist(newAnf); // Persistieren der neuen Anforderung
+			em.persist(newAnf); // Persist the new Anforderung
 			return newAnf;
 		}
 	}
@@ -180,16 +114,13 @@ public class Testfallliste implements Serializable {
 	public void erstelleTestfall() {
 		if (neuerTestfallTitel != null && !neuerTestfallTitel.trim().isEmpty() && neueTestfallBeschreibung != null
 				&& !neueTestfallBeschreibung.trim().isEmpty()) {
-
 			try {
 				em.getTransaction().begin();
-
 				Anforderung zugehoerigeAnforderung = null;
 				// Nur versuchen, die Anforderung zu laden, wenn eine ID ausgewählt wurde
 				if (neueZuErfuellendeAnforderungId != null) {
 					zugehoerigeAnforderung = em.find(Anforderung.class, neueZuErfuellendeAnforderungId);
 				}
-
 				// Erstelle den neuen Testfall mit dem geladenen Anforderung-Objekt (oder null)
 				Testfall neuerTestfall = new Testfall(zugehoerigeAnforderung, neuerTestfallTitel,
 						neueTestfallBeschreibung);
@@ -198,7 +129,7 @@ public class Testfallliste implements Serializable {
 
 				// Aktualisiere die Liste nach dem Speichern
 				liste = em.createQuery("SELECT t FROM Testfall t", Testfall.class).getResultList();
-				ladenZugewieseneTestfaelle(); // Aktualisiere die zugewiesene Liste
+				ladenZugewieseneTestfaelle();
 
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testfall erfolgreich erfasst."));
@@ -206,7 +137,7 @@ public class Testfallliste implements Serializable {
 				// Felder zurücksetzen
 				this.neuerTestfallTitel = null;
 				this.neueTestfallBeschreibung = null;
-				this.neueZuErfuellendeAnforderungId = null; // Setze ID auf null zurück
+				this.neueZuErfuellendeAnforderungId = null;
 
 			} catch (Exception e) {
 				if (em.getTransaction().isActive()) {
@@ -215,7 +146,6 @@ public class Testfallliste implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Fehler!", "Unerwarteter Fehler beim Speichern des Testfalles: " + e.getMessage()));
 			}
-
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Fehler!",
 					"Bitte füllen Sie alle erforderlichen Felder aus."));
@@ -227,16 +157,13 @@ public class Testfallliste implements Serializable {
 			em.getTransaction().begin();
 			if (zugewieseneTestfaelleListe != null) { // Speichere nur die angezeigten Testfälle
 				for (Testfall t : zugewieseneTestfaelleListe) {
-					em.merge(t); // Speichert Änderungen am Ergebnis-Feld
+					em.merge(t);
 				}
 			}
 			em.getTransaction().commit();
-
-			ladenZugewieseneTestfaelle(); // Lade die Liste neu, um aktualisierte Ergebnisse anzuzeigen
-
+			ladenZugewieseneTestfaelle();
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testfallergebnisse erfolgreich erfasst."));
-
 		} catch (Exception e) {
 			if (em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
@@ -249,35 +176,36 @@ public class Testfallliste implements Serializable {
 	public List<SelectItem> getTestfaelleAsSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<>();
 		try {
-			// Verwenden Sie 'liste' (alle Testfälle) für die Dropdown-Auswahl,
-			// da hier alle Testfälle zur Auswahl stehen sollten.
 			for (Testfall testfall : liste) {
+				// Hier wird testfall.getID() als Wert und testfall.getTestfallTitel() als Label
+				// verwendet
 				selectItems.add(new SelectItem(testfall.getID(), testfall.getTestfallTitel()));
 			}
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fehler!",
 					"Unerwarteter Fehler beim Laden der Testfallliste: " + e.getMessage()));
+		} finally {
+			return selectItems;
 		}
-		return selectItems;
 	}
 
 	// Lädt die Testfälle, die dem aktuell eingeloggten Tester zugewiesen sind.
 	// Diese Methode wird vom @PostConstruct und nach dem Speichern aufgerufen.
 	public void ladenZugewieseneTestfaelle() {
+		System.out.println("Start Methode ladenZugewoeseneTestfaelle");
 		String currentTesterName = userSessionBean.getAuthenticatedUsername();
-		String currentTesterRole = userSessionBean.getAuthenticatedUserRole();
-
-		if (currentTesterName != null && "tester".equals(currentTesterRole)) {
+		System.out.println("CurrentTesterName: " + currentTesterName);
+		if (currentTesterName != null && userSessionBean.getAuthenticatedUserRole().equals("tester")) {
 			try {
 				// Query, um Testfälle zu finden, die mit Testläufen verknüpft sind,
 				// welche dem aktuellen Tester zugewiesen sind.
-				// Durch die inverse Beziehung in Testfall (zugehoerigeTestlaeufe) funktioniert
-				// der JOIN jetzt korrekt.
+				System.out.println("Start SQL");
 				TypedQuery<Testfall> query = em.createQuery(
 						"SELECT DISTINCT tf FROM Testfall tf JOIN tf.zugehoerigeTestlaeufe tl WHERE tl.zugehoerigerTester = :testerName",
 						Testfall.class);
 				query.setParameter("testerName", currentTesterName);
 				zugewieseneTestfaelleListe = query.getResultList();
+				System.out.println(zugewieseneTestfaelleListe);
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Fehler!", "Fehler beim Laden Ihrer zugewiesenen Testfälle: " + e.getMessage()));
@@ -291,11 +219,10 @@ public class Testfallliste implements Serializable {
 	}
 
 	public List<Testfall> getZugewieseneTestfaelleListe() {
-		// Diese Methode sollte einfach die bereits geladene Liste zurückgeben.
-		// Das Laden wird im @PostConstruct und nach dem Speichern von Ergebnissen
-		// ausgelöst.
-		if (zugewieseneTestfaelleListe == null) {
-			ladenZugewieseneTestfaelle(); // Lade die Liste, falls sie noch nicht initialisiert wurde
+		if (userSessionBean != null && userSessionBean.getAuthenticatedUsername() != null) {
+			ladenZugewieseneTestfaelle();
+		} else if (userSessionBean == null || userSessionBean.getAuthenticatedUsername() == null) {
+			zugewieseneTestfaelleListe = new ArrayList<>();
 		}
 		return zugewieseneTestfaelleListe;
 	}
@@ -303,4 +230,5 @@ public class Testfallliste implements Serializable {
 	public void setZugewieseneTestfaelleListe(List<Testfall> zugewieseneTestfaelleListe) {
 		this.zugewieseneTestfaelleListe = zugewieseneTestfaelleListe;
 	}
+
 }

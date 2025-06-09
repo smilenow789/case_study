@@ -10,7 +10,10 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.OneToMany;
+import login.Benutzer;
 
 @Named
 @ViewScoped
@@ -22,7 +25,7 @@ public class Testlaufliste implements Serializable {
 	private String neuerTestlaufTitel;
 	private String neueTestlaufBeschreibung;
 	private List<Integer> neueAusgewaehlteTestfaelleIds;
-	private String neuerZugehoerigerTester;
+	private Integer neuerZugehoerigerTesterId;
 
 	public List<Integer> getNeueAusgewaehlteTestfaelleIds() {
 		return neueAusgewaehlteTestfaelleIds;
@@ -48,12 +51,12 @@ public class Testlaufliste implements Serializable {
 		this.neueTestlaufBeschreibung = neueTestlaufBeschreibung;
 	}
 
-	public String getNeuerZugehoerigerTester() {
-		return neuerZugehoerigerTester;
+	public Integer getNeuerZugehoerigerTesterId() {
+		return neuerZugehoerigerTesterId;
 	}
 
-	public void setNeuerZugehoerigerTester(String neuerZugehoerigerTester) {
-		this.neuerZugehoerigerTester = neuerZugehoerigerTester;
+	public void setNeuerZugehoerigerTesterId(Integer neuerZugehoerigerTesterId) {
+		this.neuerZugehoerigerTesterId = neuerZugehoerigerTesterId;
 	}
 
 	public Testlaufliste() {
@@ -62,14 +65,13 @@ public class Testlaufliste implements Serializable {
 	public void testlaufErstellen() {
 
 		if (neuerTestlaufTitel != null && !neuerTestlaufTitel.trim().isEmpty() && neueTestlaufBeschreibung != null
-				&& !neueTestlaufBeschreibung.trim().isEmpty() && neuerZugehoerigerTester != null
-				&& !neuerZugehoerigerTester.trim().isEmpty() && neueAusgewaehlteTestfaelleIds != null
-				&& !neueAusgewaehlteTestfaelleIds.isEmpty()) {
+				&& !neueTestlaufBeschreibung.trim().isEmpty() && neuerZugehoerigerTesterId != null
+				&& neueAusgewaehlteTestfaelleIds != null && !neueAusgewaehlteTestfaelleIds.isEmpty()) {
 
 			try {
 				em.getTransaction().begin();
 
-				// Fetch Testfall entities based on selected IDs
+				// Testfall-Entities anhand der IDs abrufen
 				Set<Testfall> selectedTestfaelle = new HashSet<>();
 				for (Integer testfallId : neueAusgewaehlteTestfaelleIds) {
 					Testfall testfall = em.find(Testfall.class, testfallId);
@@ -78,9 +80,26 @@ public class Testlaufliste implements Serializable {
 					}
 				}
 
+				// Benutzer-Entity (Tester) anhand der ID abrufen
+				Set<Benutzer> assignedTesters = new HashSet<>();
+				Benutzer tester = em.find(Benutzer.class, neuerZugehoerigerTesterId);
+				if (tester != null) {
+					assignedTesters.add(tester);
+				}
+
+				// Neuen Testlauf mit den ausgewählten Testfällen und zugewiesenen Testern
+				// erstellen
 				Testlauf neuerTestlauf = new Testlauf(neuerTestlaufTitel, neueTestlaufBeschreibung, selectedTestfaelle,
-						neuerZugehoerigerTester);
+						assignedTesters);
 				em.persist(neuerTestlauf);
+
+				// Stellen Sie sicher, dass die bidirektionale Beziehung auch vom Testfall aus
+				// gesetzt wird
+				for (Testfall tf : selectedTestfaelle) {
+					tf.getZugehoerigeTestlaeufe().add(neuerTestlauf);
+					em.merge(tf);
+				}
+
 				em.getTransaction().commit();
 
 				FacesContext.getCurrentInstance().addMessage(null,
@@ -89,7 +108,7 @@ public class Testlaufliste implements Serializable {
 				this.neuerTestlaufTitel = null;
 				this.neueTestlaufBeschreibung = null;
 				this.neueAusgewaehlteTestfaelleIds = null;
-				this.neuerZugehoerigerTester = null;
+				this.neuerZugehoerigerTesterId = null;
 
 			} catch (Exception e) {
 				// Bei Fehlern wird die Transaktion zurückgerollt, um Dateninkonsistenzen zu

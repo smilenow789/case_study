@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import login.Benutzer;
 
 @Entity
 public class Testfall implements Serializable {
@@ -25,6 +28,11 @@ public class Testfall implements Serializable {
 	// Viele Testfälle können einer Anforderung zugeordnet sein (Many-to-One)
 	// Die JoinColumn definiert die Fremdschlüsselspalte in der Testfall-Tabelle.
 	// 'nullable = true' erlaubt, dass ein Testfall keine Anforderung hat.
+
+	@ManyToOne
+	@JoinColumn(name = "benutzer_id", nullable = true)
+	private Benutzer zugehoerigerBenutzer;
+
 	@ManyToOne
 	@JoinColumn(name = "anforderung_id", nullable = true) // Fremdschlüsselspalte in Testfall-Tabelle
 	private Anforderung zuErfuellendeAnforderung; // Direkte Referenz zum Anforderung-Objekt
@@ -37,9 +45,6 @@ public class Testfall implements Serializable {
 	 * practice to use Set for many-to-many relationships to avoid duplicate entries
 	 * and to initialize the collection to prevent NullPointerExceptions.
 	 */
-
-//	@Inject // Inject the ApplicationScoped Testfallliste
-//	private Testfallliste testfallliste;
 
 	public int getID() {
 		return ID;
@@ -71,6 +76,14 @@ public class Testfall implements Serializable {
 
 	public void setErgebnis(String ergebnis) {
 		this.ergebnis = ergebnis;
+	}
+
+	public Benutzer getZugehoerigerBenutzer() {
+		return zugehoerigerBenutzer;
+	}
+
+	public void setZugehoerigerBenutzer(Benutzer zugehoerigerBenutzer) {
+		this.zugehoerigerBenutzer = zugehoerigerBenutzer;
 	}
 
 	public Anforderung getZuErfuellendeAnforderung() {

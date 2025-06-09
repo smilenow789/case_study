@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import login.Benutzer;
 import jakarta.persistence.JoinColumn;
 
 @Entity
@@ -21,14 +22,14 @@ public class Testlauf implements Serializable {
 	private int ID;
 	private String testlaufTitel;
 	private String beschreibung;
-	private String zugehoerigerTester;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }) // Cascade operations for Testfall
-	@JoinTable(name = "testlauf_testfall", // Name of the join table
-			joinColumns = @JoinColumn(name = "testlauf_id"), // Column in join table referring to Testlauf ID
-			inverseJoinColumns = @JoinColumn(name = "testfall_id") // Column in join table referring to Testfall ID
-	)
-	private Set<Testfall> ausgewaehlteTestfaelle = new HashSet<>(); // Initialize set
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "testlauf_benutzer", joinColumns = @JoinColumn(name = "testlauf_id"), inverseJoinColumns = @JoinColumn(name = "benutzer_id"))
+	private Set<Benutzer> zugehoerigerTester = new HashSet<>();
+
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "testlauf_testfall", joinColumns = @JoinColumn(name = "testlauf_id"), inverseJoinColumns = @JoinColumn(name = "testfall_id"))
+	private Set<Testfall> ausgewaehlteTestfaelle = new HashSet<>();
 
 	public String getTestlaufTitel() {
 		return testlaufTitel;
@@ -46,6 +47,14 @@ public class Testlauf implements Serializable {
 		this.beschreibung = beschreibung;
 	}
 
+	public Set<Benutzer> getZugehoerigeTester() {
+		return zugehoerigerTester;
+	}
+
+	public void setZugehoerigeTester(Set<Benutzer> zugehoerigeTester) {
+		this.zugehoerigerTester = zugehoerigeTester;
+	}
+
 	public Set<Testfall> getAusgewaehlteTestfaelle() {
 		return ausgewaehlteTestfaelle;
 	}
@@ -54,23 +63,15 @@ public class Testlauf implements Serializable {
 		this.ausgewaehlteTestfaelle = ausgewaehlteTestfaelle;
 	}
 
-	public String getZugehoerigerTester() {
-		return zugehoerigerTester;
-	}
-
-	public void setZugehoerigerTester(String zugehoerigerTester) {
-		this.zugehoerigerTester = zugehoerigerTester;
-	}
-
 	public Testlauf() {
 	}
 
 	public Testlauf(String testlaufTitel, String beschreibung, Set<Testfall> ausgewaehlteTestfaelle,
-			String zugehoerigerTester) {
+			Set<Benutzer> zugehoerigeTester) {
 		this.testlaufTitel = testlaufTitel;
 		this.beschreibung = beschreibung;
 		this.ausgewaehlteTestfaelle = ausgewaehlteTestfaelle;
-		this.zugehoerigerTester = zugehoerigerTester;
+		this.zugehoerigerTester = zugehoerigeTester;
 	}
 
 }

@@ -26,7 +26,7 @@ public class Benutzerliste implements Serializable {
 		testerListe = em.createQuery("SELECT b FROM Benutzer b WHERE rolle = 'tester'", Benutzer.class).getResultList();
 		List<SelectItem> selectItems = new ArrayList<>();
 		for (Benutzer benutzer : testerListe) {
-			selectItems.add(new SelectItem(benutzer.getName()));
+			selectItems.add(new SelectItem(benutzer.getID(), benutzer.getName()));
 		}
 		return selectItems;
 	}
