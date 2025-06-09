@@ -19,48 +19,38 @@
 						<h5>Bitte wählen Sie eine Anforderung aus, zu welcher der
 							Testfall erstellt werden soll.</h5>
 						<p:selectOneRadio id="anforderungsauswahl"
-							value="#{testfallliste.neueZuErfuellendeAnforderungId}"
+							value="#{testfallerstellerController.neueZuErfuellendeAnforderungId}"
 							layout="responsive" columns="3" required="true"
 							requiredMessage="Bitte wählen Sie eine Anforderung aus.">
 							<f:selectItems
-								value="#{anforderungsliste.anforderungenAsSelectItems}" />
+								value="#{testfallerstellerController.anforderungenAsSelectItems}" />
 						</p:selectOneRadio>
 						<p:message for="anforderungsauswahl">
 							<p:autoUpdate />
 						</p:message>
 					</div>
-
-
-
 					<div>
 						<h5>Testfall-Titel</h5>
 						<p:inputText id="testfalltitel"
-							value="#{testfallliste.neuerTestfallTitel}" required="true"
-							width="75rem" />
+							value="#{testfallerstellerController.neuerTestfallTitel}"
+							required="true" width="75rem" />
 						<p:message for="testfalltitel">
 							<p:autoUpdate />
 						</p:message>
 					</div>
-
-
-
-
 					<div>
 						<h5>Beschreibung des Testfalles</h5>
 						<p:textEditor id="beschreibung" widgetVar="editor1"
-							value="#{testfallliste.neueTestfallBeschreibung}" height="300px"
-							width="75rem" required="true" />
+							value="#{testfallerstellerController.neueTestfallBeschreibung}"
+							height="300px" width="75rem" required="true" />
 						<p:message for="beschreibung">
 							<p:autoUpdate />
 						</p:message>
 					</div>
-
-
-
 				</div>
 				<f:facet name="footer">
 					<p:commandButton value="Testfall erfassen"
-						action="#{testfallliste.erstelleTestfall}"
+						action="#{testfallerstellerController.erstelleTestfall}"
 						update="recard growlMessages" />
 				</f:facet>
 			</div>

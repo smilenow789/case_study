@@ -2,6 +2,7 @@ package service;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -15,6 +16,11 @@ public class AnforderungService {
 	@Inject
 	private AnforderungRepository anforderungRepository;
 
+	@PostConstruct
+	public void init() {
+		initializeAnforderungenIfEmpty();
+	}
+
 	@Transactional
 	public void initializeAnforderungenIfEmpty() {
 		if (anforderungRepository.count() == 0) {
@@ -24,6 +30,7 @@ public class AnforderungService {
 			anforderungRepository.save(new Anforderung("VierAnforderungsTitel", "<p>BeschreibungAnforderungVier<p>"));
 			anforderungRepository.save(new Anforderung("FünfAnforderungsTitel", "<p>BeschreibungAnforderungFünf<p>"));
 			anforderungRepository.save(new Anforderung("SechsAnforderungsTitel", "<p>BeschreibungAnforderungSechs<p>"));
+
 		}
 	}
 

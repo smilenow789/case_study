@@ -19,7 +19,9 @@ public class AnforderungRepository {
 
 	@Transactional
 	public void save(Anforderung anforderung) {
+		em.getTransaction().begin();
 		em.persist(anforderung);
+		em.getTransaction().commit();
 	}
 
 	public List<Anforderung> findAll() {

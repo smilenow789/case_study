@@ -13,20 +13,15 @@
 	<h:form>
 		<p:card id="recard" style="width: 75rem; margin-bottom: 2em">
 			<f:facet name="title">Testfall Ergebnisse erfassen:</f:facet>
-
-
 			<p:dataTable var="zugewiesenerTestfall"
-				value="#{testfallliste.zugewieseneTestfaelleListe}"
+				value="#{testerController.zugewieseneTestfaelleListe}"
 				styleClass="ui-datatable">
-
 				<p:column headerText="Testfall Id:">
 					<h:outputText value="#{zugewiesenerTestfall.ID}" />
 				</p:column>
-
 				<p:column headerText="Ihnen zugeordnete Testfälle (Testfalltitel):">
 					<h:outputText value="#{zugewiesenerTestfall.testfallTitel}" />
 				</p:column>
-
 				<p:column headerText="Ergebnis des Testfalls:">
 					<h:inputText id="testfallErgebnisInput" required="true"
 						value="#{zugewiesenerTestfall.ergebnis}" />
@@ -34,20 +29,16 @@
 						<p:autoUpdate />
 					</p:message>
 				</p:column>
-
-
 			</p:dataTable>
-
 			<h:panelGroup
-				rendered="#{empty testfallliste.zugewieseneTestfaelleListe}">
+				rendered="#{empty testerController.zugewieseneTestfaelleListe}">
 				<p class="empty-table-message">Es sind keine Testfälle
 					vorhanden. Bitte kontaktieren Sie den Testfallersteller, damit er
 					Testfälle für Sie erstellen kann.</p>
 			</h:panelGroup>
-
 			<f:facet name="footer">
 				<p:commandButton value="Speichern" update="recard growlMessages"
-					action="#{testfallliste.speicherTestfallErgebnisse}" />
+					action="#{testerController.speicherTestfallErgebnisse}" />
 			</f:facet>
 		</p:card>
 	</h:form>

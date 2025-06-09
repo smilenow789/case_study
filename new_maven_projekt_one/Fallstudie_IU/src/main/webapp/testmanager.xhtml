@@ -17,8 +17,8 @@
 				<div>
 					<h5>Titel des Testlaufs</h5>
 					<p:inputText id="testlauftitel"
-						value="#{testlaufliste.neuerTestlaufTitel}" required="true"
-						width="75rem" />
+						value="#{testmanagerController.neuerTestlaufTitel}"
+						required="true" width="75rem" />
 					<p:message for="testlauftitel">
 						<p:autoUpdate />
 					</p:message>
@@ -26,8 +26,8 @@
 				<div>
 					<h5>Beschreibung des Testlaufes</h5>
 					<p:textEditor id="beschreibung" widgetVar="editor1"
-						value="#{testlaufliste.neueTestlaufBeschreibung}" height="300px"
-						width="75rem" required="true" />
+						value="#{testmanagerController.neueTestlaufBeschreibung}"
+						height="300px" width="75rem" required="true" />
 					<p:message for="beschreibung">
 						<p:autoUpdate />
 					</p:message>
@@ -35,9 +35,10 @@
 				<div>
 					<h5>Zugehörige Testfälle auswählen</h5>
 					<p:selectManyCheckbox id="ausgewaehlteTestfaelle"
-						value="#{testlaufliste.neueAusgewaehlteTestfaelleIds}"
+						value="#{testmanagerController.neueAusgewaehlteTestfaelleIds}"
 						layout="responsive" columns="3" required="true">
-						<f:selectItems value="#{testfallliste.testfaelleAsSelectItems}" />
+						<f:selectItems
+							value="#{testmanagerController.testfaelleAsSelectItems}" />
 					</p:selectManyCheckbox>
 					<p:message for="ausgewaehlteTestfaelle">
 						<p:autoUpdate />
@@ -48,10 +49,10 @@
 					<div>
 						<h5>Tester zuweisen</h5>
 						<p:selectOneRadio id="ausgewaehlterTester"
-							value="#{testlaufliste.neuerZugehoerigerTesterId}"
+							value="#{testmanagerController.neuerZugehoerigerTesterId}"
 							layout="responsive" columns="3" required="true"
 							requiredMessage="Bitte wählen Sie ein Tester aus.">
-							<f:selectItems value="#{benutzerliste.testerListe}" />
+							<f:selectItems value="#{testmanagerController.testerListe}" />
 						</p:selectOneRadio>
 						<p:message for="ausgewaehlterTester">
 							<p:autoUpdate />
@@ -60,7 +61,7 @@
 				</div>
 				<f:facet name="footer">
 					<p:commandButton value="Testlauf erfassen"
-						action="#{testlaufliste.testlaufErstellen}"
+						action="#{testmanagerController.testlaufErstellen}"
 						update="recard growlMessages" />
 				</f:facet>
 			</div>
