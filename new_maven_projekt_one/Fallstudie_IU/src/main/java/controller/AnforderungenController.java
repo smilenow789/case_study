@@ -32,6 +32,7 @@ public class AnforderungenController implements Serializable {
 		loadAnforderungen();
 	}
 
+	// Alle Anforderungen aus der DB laden
 	public void loadAnforderungen() {
 		this.liste = anforderungService.getAllAnforderungen();
 	}
@@ -60,6 +61,8 @@ public class AnforderungenController implements Serializable {
 		this.neueAnforderungBeschreibung = neueAnforderungBeschreibung;
 	}
 
+	// Erstellt eine neue Anforderung
+	// (wird von der Seite requirementsengineer.xhtml aufgerufen)
 	public void erstelleAnforderung() {
 		try {
 			anforderungService.createAnforderung(neueAnforderungTitel, neueAnforderungBeschreibung);
@@ -67,7 +70,7 @@ public class AnforderungenController implements Serializable {
 
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Anforderung erfolgreich erfasst."));
-
+			// Felder leeren
 			this.neueAnforderungTitel = null;
 			this.neueAnforderungBeschreibung = null;
 
@@ -80,6 +83,7 @@ public class AnforderungenController implements Serializable {
 		}
 	}
 
+	// Gibt Anforderungen als SelectItems zurück (für testfallmanager.xhtml)
 	public List<SelectItem> getAnforderungenAsSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<>();
 		if (liste != null) {

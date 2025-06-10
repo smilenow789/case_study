@@ -12,6 +12,7 @@ import repository.TestfallRepository;
 import repository.UserRepository;
 import model.Anforderung;
 import model.Benutzer;
+import repository.AnforderungRepository;
 
 @ApplicationScoped
 public class TestfallService {
@@ -22,6 +23,11 @@ public class TestfallService {
 	@Inject
 	private UserRepository userRepository;
 
+	@Inject
+	private AnforderungRepository anforderungRepository;
+
+	// Erstellt Testfälle beim Start, falls keine vorhanden sind
+	// (für Demozwecke)
 	@PostConstruct
 	@Transactional
 	public void initializeTestfaelleIfEmpty() {
@@ -42,6 +48,8 @@ public class TestfallService {
 		}
 	}
 
+	// Erstellt einen neuen Testfall
+	// (wird vom Controller aufgerufen)
 	@Transactional
 	public Testfall createTestfall(Integer anforderungId, String testfallTitel, String beschreibung) {
 		if (testfallTitel == null || testfallTitel.trim().isEmpty() || beschreibung == null
@@ -51,7 +59,9 @@ public class TestfallService {
 		if (anforderungId == null) {
 			throw new IllegalArgumentException("Eine Anforderung muss für den Testfall ausgewählt werden.");
 		}
-		Anforderung zugehoerigeAnforderung = testfallRepository.findById(anforderungId).getZuErfuellendeAnforderung();
+
+		Anforderung zugehoerigeAnforderung = anforderungRepository.findById(anforderungId);
+
 		if (zugehoerigeAnforderung == null) {
 			throw new IllegalArgumentException("Ausgewählte Anforderung konnte nicht gefunden werden.");
 		}
@@ -61,6 +71,8 @@ public class TestfallService {
 		return neuerTestfall;
 	}
 
+	// Speichert die Ergebnisse von Testfällen
+	// (wird vom TesterController aufgerufen)
 	@Transactional
 	public void saveTestfallResults(List<Testfall> testfaelleToUpdate) {
 		if (testfaelleToUpdate != null) {
@@ -70,10 +82,13 @@ public class TestfallService {
 		}
 	}
 
+	// Gibt alle Testfälle zurück
 	public List<Testfall> getAllTestfaelle() {
 		return testfallRepository.findAll();
 	}
 
+	// Gibt Testfälle zurück, die einem spezifischen Tester zugewiesen sind
+	// (wird vom TesterController aufgerufen)
 	public List<Testfall> getAssignedTestfaelleForTester(String username, String role) {
 		if (username != null && role.equals("tester")) {
 			Benutzer currentTester = userRepository.findByName(username);

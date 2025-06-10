@@ -28,7 +28,7 @@ public class TestfallerstellerController implements Serializable {
 
 	private String neuerTestfallTitel;
 	private String neueTestfallBeschreibung;
-	private Integer neueZuErfuellendeAnforderungId;
+	private Integer neueZuErfuellendeAnforderungId; // ID der zu erfüllenden Anforderung für den Testfall
 
 	public String getNeuerTestfallTitel() {
 		return neuerTestfallTitel;
@@ -54,6 +54,8 @@ public class TestfallerstellerController implements Serializable {
 		this.neueZuErfuellendeAnforderungId = neueZuErfuellendeAnforderungId;
 	}
 
+	// Erstellt einen neuen Testfall
+	// (wird von der Seite testfallersteller.xhtml aufgerufen)
 	public void erstelleTestfall() {
 		try {
 			testfallService.createTestfall(neueZuErfuellendeAnforderungId, neuerTestfallTitel,
@@ -62,6 +64,7 @@ public class TestfallerstellerController implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testfall erfolgreich erfasst."));
 
+			// Felder leeren
 			this.neuerTestfallTitel = null;
 			this.neueTestfallBeschreibung = null;
 			this.neueZuErfuellendeAnforderungId = null;
@@ -75,6 +78,7 @@ public class TestfallerstellerController implements Serializable {
 		}
 	}
 
+	// Gibt Anforderungen als SelectItems zurück (für testfallersteller.xhtml)
 	public List<SelectItem> getAnforderungenAsSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<>();
 		try {

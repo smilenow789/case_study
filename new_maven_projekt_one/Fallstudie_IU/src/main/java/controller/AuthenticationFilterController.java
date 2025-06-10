@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import util.UserSessionBean;
 
+//Filter zur Authentifizierung von Benutzern
+//(wird auf bestimmte Seiten angewendet, um unautorisierten Zugriff zu verhindern)
 @WebFilter(filterName = "AuthenticationFilterController", urlPatterns = { "/requirementsengineer.xhtml",
 		"/testfallersteller.xhtml", "/testmanager.xhtml", "/tester.xhtml" })
 public class AuthenticationFilterController implements Filter {
@@ -30,13 +32,19 @@ public class AuthenticationFilterController implements Filter {
 		String requestURI = httpRequest.getRequestURI();
 		String contextPath = httpRequest.getContextPath();
 
+		// Prüft, ob ein Benutzer angemeldet ist
 		boolean isLoggedIn = (userSessionBean != null && userSessionBean.getAuthenticatedUser() != null);
 
+		// Prüft, ob die angefragte Seite die Login-Seite ist
 		boolean isLoginPage = requestURI.contains("/login.xhtml");
 
+		// Prüft, ob es sich um eine Ressource (z.B. CSS) handelt
 		boolean isResource = requestURI.startsWith(contextPath + "/jakarta.faces.resource/")
 				|| requestURI.startsWith(contextPath + "/resources/");
 
+		// Wenn nicht angemeldet, nicht auf der Login-Seite und keine Ressource,
+		// dann Weiterleitung zur Login-Seite
+		// Ansonsten die Anfrage normal fortsetzen
 		if (!isLoggedIn && !isLoginPage && !isResource) {
 			httpResponse.sendRedirect(contextPath + "/login.xhtml");
 		} else {

@@ -9,14 +9,18 @@ import repository.UserRepository;
 @ApplicationScoped
 public class BenutzerService {
 
-    @Inject
-    private UserRepository userRepository;
+	@Inject
+	private UserRepository userRepository;
 
-    public List<Benutzer> getAllBenutzer() {
-        return userRepository.findAll();
-    }
+	// Gibt alle Benutzer zurück
+	// (aufgerufen vom Controller)
+	public List<Benutzer> getAllBenutzer() {
+		return userRepository.findAll();
+	}
 
-    public List<Benutzer> getTester() {
-        return userRepository.findByRole("tester");
-    }
+	// Gibt alle Benutzer mit der Rolle "tester" zurück
+	// (aufgerufen vom TestmanagerController für Select-Auswahl)
+	public List<Benutzer> getTester() {
+		return userRepository.findByRole("tester");
+	}
 }

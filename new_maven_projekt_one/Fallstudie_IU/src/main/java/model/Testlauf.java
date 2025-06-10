@@ -13,6 +13,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinColumn;
 
+// Entität für einen Testlauf in der Datenbank
 @Entity
 public class Testlauf implements Serializable {
 
@@ -22,6 +23,7 @@ public class Testlauf implements Serializable {
 	private String testlaufTitel;
 	private String beschreibung;
 
+	// Testfälle, die zu diesem Testlauf gehören
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "testlauf_testfall", joinColumns = @JoinColumn(name = "testlauf_id"), inverseJoinColumns = @JoinColumn(name = "testfall_id"))
 	private Set<Testfall> ausgewaehlteTestfaelle = new HashSet<>();

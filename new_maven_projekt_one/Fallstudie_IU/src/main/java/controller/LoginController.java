@@ -36,9 +36,10 @@ public class LoginController implements Serializable {
 	public LoginController() {
 	}
 
+	// Erstellt Initialbenutzer, falls keine vorhanden sind
+	// (wird beim Start der Anwendung ausgeführt)
 	@PostConstruct
 	public void benutzerErstellen() {
-		// Nur für initiales Setup
 		try {
 			if (em.createQuery("SELECT COUNT(b) FROM Benutzer b", Long.class).getSingleResult() == 0) {
 				em.getTransaction().begin();
@@ -58,11 +59,15 @@ public class LoginController implements Serializable {
 		}
 	}
 
+	// Erfasst den Benutzernamen nach der Eingabe
+	// (login.xhtml)
 	public void postValidateName(ComponentSystemEvent ev) throws AbortProcessingException {
 		UIInput temp = (UIInput) ev.getComponent();
 		this.usernameInput = (String) temp.getValue();
 	}
 
+	// Validiert die Login-Daten
+	// (aufgerufen von login.xhtml)
 	public void validateLogin(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String enteredPassword = (String) value;
 		this.passwordInput = enteredPassword;
@@ -80,6 +85,8 @@ public class LoginController implements Serializable {
 		}
 	}
 
+	// Führt den Login durch und leitet auf die entsprechende Seite weiter
+	// (aufgerufen von login.xhtml)
 	public String login() {
 		if (this.authenticatedBenutzer != null) {
 			// Speichern des authentifizierten Benutzers im UserSessionBean

@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
+//Entität für einen Benutzer in der Datenbank
 @Entity
 public class Benutzer {
 	@Id
@@ -61,6 +62,10 @@ public class Benutzer {
 		this.zugewieseneTestfaelle = zugewieseneTestfaelle;
 	}
 
+	public Benutzer() {
+		super();
+	}
+
 	public Benutzer(String name, String passwort, String rolle) {
 		super();
 		this.name = name;
@@ -68,10 +73,8 @@ public class Benutzer {
 		this.rolle = rolle;
 	}
 
-	public Benutzer() {
-		super();
-	}
-
+	// Überschreibt die equals-Methode, um Benutzer anhand von Name und Passwort zu
+	// vergleichen
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Benutzer) {

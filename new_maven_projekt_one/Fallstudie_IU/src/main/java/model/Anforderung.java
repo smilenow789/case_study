@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+//Entität für eine Anforderung in der Datenbank
 @Entity
 public class Anforderung implements Serializable {
 
@@ -20,6 +21,7 @@ public class Anforderung implements Serializable {
 	private String anforderungstitel;
 	private String beschreibung;
 
+	// Zugehörige Testfälle (One-to-Many-Beziehung)
 	@OneToMany(mappedBy = "zuErfuellendeAnforderung", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Testfall> zugehoerigeTestfaelle = new HashSet<>();
 
@@ -63,6 +65,7 @@ public class Anforderung implements Serializable {
 		this.zugehoerigeTestfaelle = zugehoerigeTestfaelle;
 	}
 
+	// Fügt einen Testfall zur Anforderung hinzu
 	public void addTestfall(Testfall testfall) {
 		this.zugehoerigeTestfaelle.add(testfall);
 		testfall.setZuErfuellendeAnforderung(this);

@@ -14,6 +14,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
+// Entität für einen Testfall in der Datenbank
 @Entity
 public class Testfall implements Serializable {
 
@@ -22,16 +23,18 @@ public class Testfall implements Serializable {
 	private int ID;
 	private String testfallTitel;
 	private String beschreibung;
-	private String ergebnis = "noch nicht ausgeführt";
+	private String ergebnis = "noch nicht ausgeführt"; // Ergebnis des Testfalls (Standard: "noch nicht ausgeführt")
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "testfall_benutzer_assignment", joinColumns = @JoinColumn(name = "testfall_id"), inverseJoinColumns = @JoinColumn(name = "benutzer_id"))
-	private Set<Benutzer> zugewieseneBenutzer = new HashSet<>();
+	@JoinTable(name = "testfall_benutzer", joinColumns = @JoinColumn(name = "testfall_id"), inverseJoinColumns = @JoinColumn(name = "benutzer_id"))
+	private Set<Benutzer> zugewieseneBenutzer = new HashSet<>();// Benutzer, denen dieser Testfall zugewiesen ist
 
+	// Die Anforderung, die dieser Testfall erfüllt (Many-to-One-Beziehung)
 	@ManyToOne
 	@JoinColumn(name = "anforderung_id", nullable = true)
 	private Anforderung zuErfuellendeAnforderung;
 
+	// Testläufe, in denen dieser Testfall enthalten ist
 	@ManyToMany(mappedBy = "ausgewaehlteTestfaelle")
 	private Set<Testlauf> zugehoerigeTestlaeufe = new HashSet<>();
 
@@ -100,6 +103,7 @@ public class Testfall implements Serializable {
 		this.beschreibung = beschreibung;
 	}
 
+	// Fügt einen zugewiesenen Benutzer zum Testfall hinzu
 	public void addZugewiesenerBenutzer(Benutzer benutzer) {
 		this.zugewieseneBenutzer.add(benutzer);
 		benutzer.getZugewieseneTestfaelle().add(this);

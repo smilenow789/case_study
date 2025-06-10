@@ -14,11 +14,14 @@ public class AnforderungService {
 	@Inject
 	private AnforderungRepository anforderungRepository;
 
+	// Initialisiert den Service beim Start
 	@PostConstruct
 	public void init() {
 		initializeAnforderungenIfEmpty();
 	}
 
+	// Erstellt Initialanforderungen, falls die Datenbank leer ist
+	// (für Demozwecke)
 	@Transactional
 	public void initializeAnforderungenIfEmpty() {
 		if (anforderungRepository.count() == 0) {
@@ -32,6 +35,8 @@ public class AnforderungService {
 		}
 	}
 
+	// Erstellt eine neue Anforderung
+	// (wird vom Controller aufgerufen)
 	@Transactional
 	public Anforderung createAnforderung(String title, String description) {
 		if (title == null || title.trim().isEmpty() || description == null || description.trim().isEmpty()) {
@@ -42,6 +47,8 @@ public class AnforderungService {
 		return neueAnforderung;
 	}
 
+	// Ruft alle Anforderungen ab
+	// (wird vom Controller aufgerufen)
 	public List<Anforderung> getAllAnforderungen() {
 		return anforderungRepository.findAll();
 	}

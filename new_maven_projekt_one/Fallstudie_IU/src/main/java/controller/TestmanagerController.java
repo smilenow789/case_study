@@ -28,7 +28,7 @@ public class TestmanagerController implements Serializable {
 	private TestfallService testfallService;
 
 	@Inject
-	private BenutzerService benutzerService; 
+	private BenutzerService benutzerService;
 
 	private String neuerTestlaufTitel;
 	private String neueTestlaufBeschreibung;
@@ -67,6 +67,7 @@ public class TestmanagerController implements Serializable {
 		this.neuerZugehoerigerTesterId = neuerZugehoerigerTesterId;
 	}
 
+	// Erstellt einen neuen Testlauf (aufgerufen von testmanager.xhtml)
 	public void testlaufErstellen() {
 		try {
 			testlaufService.createTestlauf(neuerTestlaufTitel, neueTestlaufBeschreibung, neueAusgewaehlteTestfaelleIds,
@@ -75,6 +76,7 @@ public class TestmanagerController implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testlauf erfolgreich erfasst."));
 
+			// Felder leeren
 			this.neuerTestlaufTitel = null;
 			this.neueTestlaufBeschreibung = null;
 			this.neueAusgewaehlteTestfaelleIds = null;
@@ -89,6 +91,8 @@ public class TestmanagerController implements Serializable {
 		}
 	}
 
+	// Gibt alle Testfälle als SelectItems zurück
+	// (für Auswahlliste auf testmanager.xhtml)
 	public List<SelectItem> getTestfaelleAsSelectItems() {
 		List<SelectItem> selectItems = new ArrayList<>();
 		try {
@@ -103,6 +107,8 @@ public class TestmanagerController implements Serializable {
 		return selectItems;
 	}
 
+	// Gibt Tester als SelectItems zurück
+	// (für Auswahlliste auf testmanager.xhtml)
 	public List<SelectItem> getTesterListe() {
 		List<SelectItem> selectItems = new ArrayList<>();
 		try {

@@ -26,40 +26,47 @@ public class TestlaufService {
 	@Inject
 	private UserRepository userRepository;
 
+	// Erstellt einen neuen Testlauf
+	// (wird vom TestmanagerController aufgerufen)
 	@Transactional
 	public Testlauf createTestlauf(String titel, String beschreibung, List<Integer> selectedTestfaelleIds,
 			Integer zugewiesenerTesterId) {
 
+		// Validierung der Eingabedaten
 		if (titel == null || titel.trim().isEmpty() || beschreibung == null || beschreibung.trim().isEmpty()
 				|| zugewiesenerTesterId == null || selectedTestfaelleIds == null || selectedTestfaelleIds.isEmpty()) {
 			throw new IllegalArgumentException(
 					"Alle erforderlichen Felder müssen ausgefüllt und mindestens ein Testfall ausgewählt sein.");
 		}
 
+		// Sucht den zugewiesenen Tester
 		Benutzer tester = userRepository.findById(zugewiesenerTesterId);
 		if (tester == null) {
 			throw new IllegalArgumentException("Der zugewiesene Tester konnte nicht gefunden werden.");
 		}
 
+		// Sammelt die ausgewählten Testfälle und weist sie dem Tester zu
 		Set<Testfall> selectedTestfaelle = new HashSet<>();
 		for (Integer testfallId : selectedTestfaelleIds) {
 			Testfall testfall = testfallRepository.findById(testfallId);
 			if (testfall != null) {
-				testfall.addZugewiesenerBenutzer(tester);
-				testfallRepository.update(testfall);
+				testfall.addZugewiesenerBenutzer(tester); // Weist den Tester dem Testfall zu
+				testfallRepository.update(testfall); // Aktualisiert den Testfall in der Datenbank
 				selectedTestfaelle.add(testfall);
 			}
 		}
 
+		// Validierung, ob gültige Testfälle gefunden wurden
 		if (selectedTestfaelle.isEmpty()) {
 			throw new IllegalArgumentException(
 					"Es wurden keine gültigen Testfälle zum Anlegen des Testlaufs gefunden.");
 		}
 
+		// Erstellt und speichert den neuen Testlauf
 		Testlauf neuerTestlauf = new Testlauf(titel, beschreibung, selectedTestfaelle);
 		testlaufRepository.save(neuerTestlauf);
 
-		// Ensure bidirectional relationship from Testfall to Testlauf
+		// Stellt die bidirektionale Beziehung von Testfall zu Testlauf sicher
 		for (Testfall tf : selectedTestfaelle) {
 			tf.getZugehoerigeTestlaeufe().add(neuerTestlauf);
 			testfallRepository.update(tf);
@@ -67,6 +74,8 @@ public class TestlaufService {
 		return neuerTestlauf;
 	}
 
+	// Gibt alle Testläufe zurück
+	// (wird vom Controller aufgerufen)
 	public List<Testlauf> getAllTestlaeufe() {
 		return testlaufRepository.findAll();
 	}

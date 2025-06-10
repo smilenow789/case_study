@@ -27,6 +27,7 @@ public class TesterController implements Serializable {
 
 	private List<Testfall> zugewieseneTestfaelleListe;
 
+	// Initialisiert die Liste zugewieseneTestfaelleListe beim Start
 	@PostConstruct
 	public void init() {
 		loadAssignedTestfaelle();
@@ -42,6 +43,8 @@ public class TesterController implements Serializable {
 		}
 	}
 
+	// Lädt zugewiesene Testfälle für den aktuellen Tester
+	// (aufgerufen beim Laden der Seite tester.xhtml)
 	public List<Testfall> getZugewieseneTestfaelleListe() {
 		return zugewieseneTestfaelleListe;
 	}
@@ -50,10 +53,12 @@ public class TesterController implements Serializable {
 		this.zugewieseneTestfaelleListe = zugewieseneTestfaelleListe;
 	}
 
+	// Speichert die Ergebnisse der Testfälle
+	// (aufgerufen von der Seite tester.xhtml)
 	public void speicherTestfallErgebnisse() {
 		try {
 			testfallService.saveTestfallResults(zugewieseneTestfaelleListe);
-			loadAssignedTestfaelle();
+			loadAssignedTestfaelle(); // Liste aktualisieren
 
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolg!", "Testfallergebnisse erfolgreich erfasst."));
