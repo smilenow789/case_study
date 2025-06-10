@@ -9,13 +9,14 @@
   <packaging>war</packaging>
 
   <name>Fallstudie_IU Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <url>https://github.com/smilenow789/case_study</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <jakartaee-api.version>10.0.0</jakartaee-api.version> <mojarra.version>4.0.0-M1</mojarra.version>
+    <jakartaee-api.version>10.0.0</jakartaee-api.version>
+    <mojarra.version>4.0.0-M1</mojarra.version>
     <weld.version>4.0.2.Final</weld.version>
     <primefaces.version>14.0.0</primefaces.version>
     <hibernate.version>6.4.4.Final</hibernate.version>
@@ -43,7 +44,7 @@
       <groupId>org.jboss.weld.servlet</groupId>
       <artifactId>weld-servlet-shaded</artifactId>
       <version>${weld.version}</version>
-      <scope>runtime</scope> </dependency>
+     </dependency>
 
     <dependency>
       <groupId>org.hibernate.orm</groupId>
