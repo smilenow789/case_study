@@ -3,14 +3,11 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Benutzer {
@@ -21,9 +18,8 @@ public class Benutzer {
 	private String passwort;
 	private String rolle;
 
-    // Add the ManyToMany mapping
-    @ManyToMany(mappedBy = "zugewieseneBenutzer")
-    private Set<Testfall> zugewieseneTestfaelle = new HashSet<>();
+	@ManyToMany(mappedBy = "zugewieseneBenutzer")
+	private Set<Testfall> zugewieseneTestfaelle = new HashSet<>();
 
 	public int getID() {
 		return ID;
@@ -57,13 +53,13 @@ public class Benutzer {
 		return rolle;
 	}
 
-    public Set<Testfall> getZugewieseneTestfaelle() {
-        return zugewieseneTestfaelle;
-    }
+	public Set<Testfall> getZugewieseneTestfaelle() {
+		return zugewieseneTestfaelle;
+	}
 
-    public void setZugewieseneTestfaelle(Set<Testfall> zugewieseneTestfaelle) {
-        this.zugewieseneTestfaelle = zugewieseneTestfaelle;
-    }
+	public void setZugewieseneTestfaelle(Set<Testfall> zugewieseneTestfaelle) {
+		this.zugewieseneTestfaelle = zugewieseneTestfaelle;
+	}
 
 	public Benutzer(String name, String passwort, String rolle) {
 		super();

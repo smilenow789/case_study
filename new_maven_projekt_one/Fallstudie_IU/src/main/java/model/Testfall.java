@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Testfall implements Serializable {
@@ -25,24 +24,16 @@ public class Testfall implements Serializable {
 	private String beschreibung;
 	private String ergebnis = "noch nicht ausgeführt";
 
-	// ADD THE NEW ManyToMany MAPPING
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "testfall_benutzer_assignment", // Name for the join table
-			joinColumns = @JoinColumn(name = "testfall_id"), inverseJoinColumns = @JoinColumn(name = "benutzer_id"))
+	@JoinTable(name = "testfall_benutzer_assignment", joinColumns = @JoinColumn(name = "testfall_id"), inverseJoinColumns = @JoinColumn(name = "benutzer_id"))
 	private Set<Benutzer> zugewieseneBenutzer = new HashSet<>();
 
 	@ManyToOne
-	@JoinColumn(name = "anforderung_id", nullable = true) // Fremdschlüsselspalte in Testfall-Tabelle
-	private Anforderung zuErfuellendeAnforderung; // Direkte Referenz zum Anforderung-Objekt
+	@JoinColumn(name = "anforderung_id", nullable = true)
+	private Anforderung zuErfuellendeAnforderung;
 
-	@ManyToMany(mappedBy = "ausgewaehlteTestfaelle") // Testlauf owns the relationship
-	private Set<Testlauf> zugehoerigeTestlaeufe = new HashSet<>(); // Initialize to prevent NullPointerException
-
-	/*
-	 * private Set<Testlauf> zugehoerigeTestlaeufe = new HashSet<>();: It's good
-	 * practice to use Set for many-to-many relationships to avoid duplicate entries
-	 * and to initialize the collection to prevent NullPointerExceptions.
-	 */
+	@ManyToMany(mappedBy = "ausgewaehlteTestfaelle")
+	private Set<Testlauf> zugehoerigeTestlaeufe = new HashSet<>();
 
 	public int getID() {
 		return ID;
@@ -109,10 +100,9 @@ public class Testfall implements Serializable {
 		this.beschreibung = beschreibung;
 	}
 
-	// Add helper methods to manage the ManyToMany relationship
 	public void addZugewiesenerBenutzer(Benutzer benutzer) {
 		this.zugewieseneBenutzer.add(benutzer);
-		benutzer.getZugewieseneTestfaelle().add(this); // Assuming Benutzer has a mappedBy relationship
+		benutzer.getZugewieseneTestfaelle().add(this);
 	}
 
 }
