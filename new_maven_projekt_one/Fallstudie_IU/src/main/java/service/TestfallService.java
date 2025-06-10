@@ -81,7 +81,7 @@ public class TestfallService {
     public void saveTestfallResults(List<Testfall> testfaelleToUpdate) {
         if (testfaelleToUpdate != null) {
             for (Testfall t : testfaelleToUpdate) {
-                testfallRepository.update(t); // Use update for merging changes
+                testfallRepository.update(t);
             }
         }
     }

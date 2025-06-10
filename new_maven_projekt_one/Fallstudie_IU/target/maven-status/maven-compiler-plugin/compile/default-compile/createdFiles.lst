@@ -1,5 +1,6 @@
 model\Testfall.class
 util\UserSessionBean.class
+controller\AuthenticationFilterController.class
 repository\TestlaufRepository.class
 service\BenutzerService.class
 service\TestlaufService.class

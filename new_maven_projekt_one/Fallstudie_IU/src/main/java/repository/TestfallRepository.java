@@ -29,8 +29,10 @@ public class TestfallRepository {
 	}
 
 	@Transactional
-	public Testfall update(Testfall testfall) {
-		return em.merge(testfall);
+	public void update(Testfall testfall) {
+		em.getTransaction().begin();
+		em.merge(testfall);
+		em.getTransaction().commit();
 	}
 
 	public List<Testfall> findAll() {
@@ -48,12 +50,6 @@ public class TestfallRepository {
 		return query.getResultList();
 	}
 
-	// This method logically belongs to AnforderungRepository, but given it's used
-	// here for initial data, we'll keep it here for now or move it to
-	// AnforderungService.
-	// For a cleaner architecture, findOrCreateAnforderung should be part of
-	// AnforderungService
-	// and injected into TestfallService.
 	@Transactional
 	public Anforderung findOrCreateAnforderung(String titel, String beschreibung) {
 		try {
