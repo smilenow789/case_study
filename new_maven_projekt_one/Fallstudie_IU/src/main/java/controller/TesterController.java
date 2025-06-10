@@ -43,12 +43,6 @@ public class TesterController implements Serializable {
 	}
 
 	public List<Testfall> getZugewieseneTestfaelleListe() {
-		// Important: loadAssignedTestfaelle should be called from PostConstruct or
-		// action methods
-		// not directly from a getter for a list that is modified by a P:dataTable
-		// unless you specifically need to reload on every access (which can be
-		// inefficient).
-		// Let's rely on PostConstruct and action methods to update it.
 		return zugewieseneTestfaelleListe;
 	}
 

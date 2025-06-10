@@ -18,7 +18,7 @@
 	<p:growl id="growlMessages" showDetail="true" life="4000"
 		severity="info" />
 	<h:form>
-		<p:card id="recard" style="width: 75rem; margin-bottom: 2em">
+		<p:card id="recard" style="width: 60rem; margin-bottom: 2em">
 			<f:facet name="title">Neuer Testlauf anlegen:</f:facet>
 			<div>
 				<div>
@@ -34,7 +34,7 @@
 					<h5>Beschreibung des Testlaufes</h5>
 					<p:textEditor id="beschreibung" widgetVar="editor1"
 						value="#{testmanagerController.neueTestlaufBeschreibung}"
-						height="300px" width="75rem" required="true" />
+						height="200px" width="50rem" required="true" />
 					<p:message for="beschreibung">
 						<p:autoUpdate />
 					</p:message>
@@ -51,7 +51,6 @@
 						<p:autoUpdate />
 					</p:message>
 				</div>
-
 				<div>
 					<div>
 						<h5>Tester zuweisen</h5>
@@ -73,7 +72,6 @@
 				</f:facet>
 			</div>
 		</p:card>
-
 	</h:form>
 </h:body>
 </html>

@@ -29,7 +29,6 @@ public class AnforderungenController implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		anforderungService.initializeAnforderungenIfEmpty();
 		loadAnforderungen();
 	}
 

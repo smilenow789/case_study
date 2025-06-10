@@ -18,16 +18,16 @@
 	<p:growl id="growlMessages" showDetail="true" life="4000"
 		severity="info" />
 	<h:form>
-		<p:card id="recard" style="width: 75rem; margin-bottom: 2em">
+		<p:card id="recard" style="width: 60rem; margin-bottom: 2em">
 			<f:facet name="title">Testfall Ergebnisse erfassen:</f:facet>
 			<p:dataTable var="zugewiesenerTestfall"
 				value="#{testerController.zugewieseneTestfaelleListe}"
 				styleClass="ui-datatable">
-				<p:column headerText="Testfall Id:">
-					<h:outputText value="#{zugewiesenerTestfall.ID}" />
-				</p:column>
 				<p:column headerText="Ihnen zugeordnete Testfälle (Testfalltitel):">
 					<h:outputText value="#{zugewiesenerTestfall.testfallTitel}" />
+				</p:column>
+				<p:column headerText="Testfall Id:">
+					<h:outputText value="#{zugewiesenerTestfall.beschreibung}" />
 				</p:column>
 				<p:column headerText="Ergebnis des Testfalls:">
 					<h:inputText id="testfallErgebnisInput" required="true"

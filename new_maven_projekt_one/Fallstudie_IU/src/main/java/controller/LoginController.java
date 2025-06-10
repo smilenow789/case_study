@@ -2,7 +2,6 @@ package controller;
 
 import java.io.Serializable;
 
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
@@ -39,7 +38,6 @@ public class LoginController implements Serializable {
 
 	@PostConstruct
 	public void benutzerErstellen() {
-		// This block creates initial users if the database is empty.
 		// Nur für initiales Setup
 		try {
 			if (em.createQuery("SELECT COUNT(b) FROM Benutzer b", Long.class).getSingleResult() == 0) {
@@ -54,12 +52,9 @@ public class LoginController implements Serializable {
 				em.getTransaction().commit();
 			}
 		} catch (Exception e) {
-			// Handle potential exceptions during initial user creation (e.g., if
-			// transaction is already active)
 			if (em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
 			}
-			System.err.println("Error creating initial users: " + e.getMessage());
 		}
 	}
 

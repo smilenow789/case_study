@@ -6,7 +6,6 @@ import jakarta.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import model.Benutzer;
 import model.Testfall;
@@ -61,19 +60,9 @@ public class TestlaufService {
 		testlaufRepository.save(neuerTestlauf);
 
 		// Ensure bidirectional relationship from Testfall to Testlauf
-		// Testlauf's ManyToMany 'ausgewaehlteTestfaelle' owns the relationship
-		// So, this loop is not strictly necessary if Testlauf's side is correctly
-		// managing,
-		// but it can help ensure data consistency or if Testlauf is not the owning
-		// side.
-		// Given your Testlauf.java, Testlauf is the owning side, so this might be
-		// redundant
-		// if `testlaufRepository.save` cascades correctly and sets the join table
-		// entries.
-		// However, for safety with existing setup, we'll keep it for now.
 		for (Testfall tf : selectedTestfaelle) {
 			tf.getZugehoerigeTestlaeufe().add(neuerTestlauf);
-			testfallRepository.update(tf); // Ensure this merge cascade is handled or entity is managed
+			testfallRepository.update(tf);
 		}
 		return neuerTestlauf;
 	}

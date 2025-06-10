@@ -51,38 +51,6 @@ public class TestfallService {
 		if (anforderungId == null) {
 			throw new IllegalArgumentException("Eine Anforderung muss für den Testfall ausgewählt werden.");
 		}
-
-		// Anforderung zugehoerigeAnforderung =
-		// testfallRepository.findById(anforderungId).getZuErfuellendeAnforderung();
-		// Assuming findById returns Testfall and Testfall has
-		// getZuErfuellendeAnforderung()
-		// Correction: Anforderung object needs to be retrieved from
-		// AnforderungRepository
-		// For simplicity for now, let's assume findOrCreateAnforderung returns an
-		// Anforderung
-		// or add AnforderungRepository to TestfallService.
-		// Let's adapt:
-		// @Inject AnforderungRepository anforderungRepository;
-		// Anforderung zugehoerigeAnforderung =
-		// anforderungRepository.findById(anforderungId);
-		// FOR NOW, using testfallRepository.findOrCreateAnforderung logic (which is
-		// slightly out of place but works for migration)
-		// If AnforderungRepository exists, use it:
-		// @Inject private AnforderungRepository anforderungRepository;
-		// Anforderung zugehoerigeAnforderung =
-		// anforderungRepository.findById(anforderungId);
-
-		// Given the current structure, if Anforderung cannot be directly found by ID in
-		// TestfallRepository,
-		// you'd need to inject AnforderungRepository here OR ensure
-		// findOrCreateAnforderung handles finding existing ones.
-		// For the sake of refactoring Testfallliste, let's assume Anforderung lookup
-		// works.
-
-		// As a temporary fix for refactoring without a dedicated AnforderungRepository
-		// lookup in service yet:
-		// This is a placeholder. Ideally, an AnforderungService or
-		// AnforderungRepository would provide this.
 		Anforderung zugehoerigeAnforderung = testfallRepository.findById(anforderungId).getZuErfuellendeAnforderung();
 		if (zugehoerigeAnforderung == null) {
 			throw new IllegalArgumentException("Ausgewählte Anforderung konnte nicht gefunden werden.");

@@ -30,12 +30,6 @@ public class TestfallerstellerController implements Serializable {
 	private String neueTestfallBeschreibung;
 	private Integer neueZuErfuellendeAnforderungId;
 
-	@PostConstruct
-	public void init() {
-		// Services can handle their own initialization if needed.
-		// No direct loading of lists here, but potentially needed for other UI parts.
-	}
-
 	public String getNeuerTestfallTitel() {
 		return neuerTestfallTitel;
 	}
