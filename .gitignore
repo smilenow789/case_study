@@ -1,0 +1,63 @@
+# Compiled class files
+target/
+*.class
+
+# Package Files
+*.jar
+*.war
+
+# Log files
+*.log
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+.metadata/
+# Ignore Eclipse-specific files that might be in the project root
+# .project and .classpath are often included, but if you want to be stricter
+# and let the IDE regenerate them, you can uncomment them.
+# For this project setup, keeping .project and .classpath is reasonable
+# as they define the project structure for other Eclipse users.
+
+# Maven specific files
+# Maven temporary and generated files
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Visual Studio Code files (if you use VS Code)
+.vscode/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# MyEclipse (if you use MyEclipse)
+.mygh.properties
+
+# IntelliJ IDEA (if you use IntelliJ)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# NetBeans (if you use NetBeans)
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Generic backup files
+*~
+*.bak
+*.swp
